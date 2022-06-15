@@ -17,4 +17,7 @@ class Result<T, E> {
   T? _okValue;
   E? _errValue;
   late final ResultType _type;
+
+  T get _ok => _okValue!;
+  E get _err => _errValue!;
 }
