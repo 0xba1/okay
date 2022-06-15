@@ -1,5 +1,5 @@
 name: okay
-description: A new Flutter package project.
+description: An implementation of rust's `Result` type in dart.
 version: 0.0.1
 homepage:
 
