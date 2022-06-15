@@ -1,7 +1,5 @@
 library okay;
 
-/// A Calculator.
-class Calculator {
-  /// Returns [value] plus 1.
-  int addOne(int value) => value + 1;
-}
+export '_src/ok_err.dart';
+export '_src/result.dart';
+export '_src/result_type.dart';
