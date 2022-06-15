@@ -39,4 +39,21 @@ extension QueryingValues<T, E> on Result<T, E> {
 
     return false;
   }
+
+  /// Resturns `true` if the result is `ok` (success)
+  ///
+  /// # Expamples
+  ///
+  /// Basic usage:
+  ///
+  /// ```dart
+  /// Result<int, String> y = err('An unexpected error occured');
+  /// expect(x.isErr(), true);
+  ///
+  /// Result<int, String> x = ok(0);
+  /// expect(x.isErr(), false);
+  /// ```
+  bool isErr() {
+    return _type == ResultType.err;
+  }
 }
