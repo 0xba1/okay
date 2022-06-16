@@ -56,4 +56,43 @@ extension Transformers<T, E> on Result<T, E> {
         return fallback;
     }
   }
+
+  /// Maps a `Result<T, E>` to `U` by applying fallback function `fallback` to
+  /// a contained `err` (failure) value, or function `op` to a
+  /// contained `ok` (success) value.
+  ///
+  /// This function can be used to unpack a successful result
+  /// while handliing an error.
+  ///
+  /// # Examples
+  ///
+  /// Basic usage:
+  ///
+  /// ```dart
+  /// Result<int, int> x = ok(9);
+  /// expect(
+  ///   x.mapOrElse(
+  ///     (error) => 'Failed: $error',
+  ///     (value) => 'Success: $value',
+  ///   ),
+  ///   'Success: 9',
+  /// );
+  ///
+  /// Result<int, int> x = err(81);
+  /// expect(
+  ///   x.mapOrElse(
+  ///     (error) => 'Failed: $error',
+  ///     (value) => 'Success: $value',
+  ///   ),
+  ///   'Failed: 81',
+  /// );
+  /// ```
+  U mapOrElse<U>(U Function(E) fallback, U Function(T) op) {
+    switch (_type) {
+      case ResultType.ok:
+        return op(_ok);
+      case ResultType.err:
+        return fallback(_err);
+    }
+  }
 }
