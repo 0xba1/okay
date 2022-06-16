@@ -1,6 +1,8 @@
 import 'package:okay/_src/result_type.dart';
 
 part 'result/querying_values.dart';
+part 'result/adapter.dart';
+part 'result/transformers.dart';
 
 /// `Result` is a type that that represents either success (`ok`) or failure (`err`)
 class Result<T, E> {
