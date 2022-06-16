@@ -95,4 +95,33 @@ extension Transformers<T, E> on Result<T, E> {
         return fallback(_err);
     }
   }
+
+  /// Maps a `Result<T, E>` to `Result<T, F>` by applying a function to a
+  /// contained `err` (failure) value,
+  /// leaving an `ok` (success) value untouched.
+  ///
+  /// This function can be used to pass through a successful result while
+  /// handling an error.
+  ///
+  /// # Examples
+  ///
+  /// Basic usage:
+  ///
+  /// ```dart
+  /// String stringify(int x) => 'error code: $x';
+  ///
+  /// Result<int, int> x = ok(2);
+  /// expect(x.mapErr(stringify), ok(2));
+  ///
+  /// Result<int, int> y = err(2);
+  /// expect(y.mapErr(stringify), err('error code: 13'));
+  /// ```
+  Result<T, F> mapErr<F>(F Function(E) op) {
+    switch (_type) {
+      case ResultType.err:
+        return Result.err(op(_err));
+      case ResultType.ok:
+        return Result.ok(_ok);
+    }
+  }
 }
