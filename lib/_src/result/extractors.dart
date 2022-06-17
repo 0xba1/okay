@@ -61,4 +61,30 @@ extension Extractors<T, E> on Result<T, E> {
         );
     }
   }
+
+  /// Returns the contained `err` (failure) value.
+  ///
+  /// ## Throws an exception
+  ///
+  /// Throws an exception if the value is an `ok` (success),
+  /// with the exception message including the passed message,
+  /// and the content of the `ok` value.
+  ///
+  /// ## Examples
+  ///
+  /// ```dart
+  ///Result<int, String> x = ok(9);
+  ///x.expectErr("Testing expectErr"); // throws an exception with `Testing expectErr: 9`
+  /// ```
+  E expectErr(String message) {
+    switch (_type) {
+      case ResultType.err:
+        return _err;
+      case ResultType.ok:
+        throw ExpectErrException(
+          errorMessage: message,
+          okString: _okValue.toString(),
+        );
+    }
+  }
 }
