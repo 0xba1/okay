@@ -114,4 +114,28 @@ extension Extractors<T, E> on Result<T, E> {
         );
     }
   }
+
+  /// Returns the contained `ok` (success) value or a provided fallback.
+  ///
+  /// ## Examples
+  ///
+  /// Basic usage:
+  ///
+  /// ```dart
+  /// final fallback = 23;
+  ///
+  /// Result<int, String> x = ok(9);
+  /// expect(x.unwrapOr(fallback), 9);
+  ///
+  /// Result<int, String> y = err('Error!');
+  /// expect(y.unwrapOr(fallback), fallback);
+  /// ```
+  T unwrapOr(T fallback) {
+    switch (_type) {
+      case ResultType.ok:
+        return _ok;
+      case ResultType.err:
+        return fallback;
+    }
+  }
 }
