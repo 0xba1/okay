@@ -28,4 +28,22 @@ class Result<T, E> {
 
   T get _ok => _okValue!;
   E get _err => _errValue!;
+
+  /// Type of result; `ok` (success) or `err` (failure)
+  ///
+  /// ## Examples
+  ///
+  /// Basic usage
+  ///
+  /// ```dart
+  /// switch (_type) {
+  ///   case ResultType.ok:
+  ///     print('Success');
+  ///     break;
+  ///   case ResultType.err:
+  ///     print('Failure');
+  ///     break;
+  /// }
+  /// ```
+  ResultType get type => _type;
 }
