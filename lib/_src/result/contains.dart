@@ -26,4 +26,29 @@ extension Contains<T, E> on Result<T, E> {
         return false;
     }
   }
+
+  /// Returns `true` if the result is an `err` (failure) value
+  /// containing the given value.
+  ///
+  /// ## Examples
+  ///
+  /// Basic usage:
+  /// ```dart
+  /// Result<int, String> x = ok(2);
+  /// expect(x.containsErr('Some error message'), false);
+  ///
+  /// Result<int, String> x = err('Some error message');
+  /// expect(x.contains('Some error message'), true);
+  ///
+  /// Result<int, String> x = err('Some other error message');
+  /// expect(x.contains('Some error message'), false);
+  /// ```
+  bool containsErr(Object x) {
+    switch (_type) {
+      case ResultType.err:
+        return _err == x;
+      case ResultType.ok:
+        return false;
+    }
+  }
 }
