@@ -1,5 +1,8 @@
-/// Superclass of all `Result` `Exception`s
+/// Abstract superclass of all `Result` `Exception`s
 abstract class ResultException implements Exception {
+  /// Abstract superclass of all `Result` `Exception`s
+  const ResultException();
+
   /// Error message
   String get message;
 }
@@ -9,8 +12,10 @@ abstract class ResultException implements Exception {
 /// {@endtemplate}
 class ExpectException extends ResultException {
   /// {@macro expect}
-  ExpectException({required String errorMessage, required String errString})
-      : message = '$errorMessage: $errString';
+  const ExpectException({
+    required String errorMessage,
+    required String errString,
+  }) : message = '$errorMessage: $errString';
 
   @override
   final String message;
@@ -21,8 +26,10 @@ class ExpectException extends ResultException {
 /// {@endtemplate}
 class ExpectErrException extends ResultException {
   /// {@macro expect_err}
-  ExpectErrException({required String errorMessage, required String okString})
-      : message = '$errorMessage: $okString';
+  const ExpectErrException({
+    required String errorMessage,
+    required String okString,
+  }) : message = '$errorMessage: $okString';
 
   @override
   final String message;
@@ -33,7 +40,7 @@ class ExpectErrException extends ResultException {
 /// {@endtemplate}
 class UnwrapException extends ResultException {
   /// {@macro unwrap}
-  UnwrapException({required String errString})
+  const UnwrapException({required String errString})
       : message = 'called `Result.unwrap()` on an `err` value: $errString';
 
   @override
@@ -45,7 +52,7 @@ class UnwrapException extends ResultException {
 /// {@endtemplate}
 class UnwrapErrException extends ResultException {
   /// {@macro unwrap_err}
-  UnwrapErrException({required String okString})
+  const UnwrapErrException({required String okString})
       : message = 'called `Result.unwrapErr()` on an `ok` value: $okString';
 
   @override

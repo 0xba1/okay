@@ -31,4 +31,34 @@ extension Extractors<T, E> on Result<T, E> {
         );
     }
   }
+
+  /// Returns the contained `ok` (success) value.
+  /// Because this function may throw an exception, its use is generally discouraged.
+  /// Instead, prefer to use `switch` statements with the `Result.type`
+  /// and handle the `err` (failure) case explicitly, or call [`unwrapOr`],
+  /// [`unwrapOrElse`].
+  ///
+  /// ## Throws an exception
+  ///
+  /// Throws an exception if the value is an `err`, with exception message
+  /// provided by the `err`'s value.
+  ///
+  /// ## Examples
+  ///
+  /// Basic Usage:
+  ///
+  /// ```dart
+  /// Result<int, String> x = ok(69);
+  /// expect(x.unwrap(), 69);
+  /// ```
+  T unwrap() {
+    switch (_type) {
+      case ResultType.ok:
+        return _ok;
+      case ResultType.err:
+        throw UnwrapException(
+          errString: _errValue.toString(),
+        );
+    }
+  }
 }
