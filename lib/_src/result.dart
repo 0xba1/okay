@@ -2,12 +2,13 @@ import 'package:okay/_src/exceptions.dart';
 import 'package:okay/_src/result_type.dart';
 
 part 'result/adapter.dart';
+part 'result/boolean.dart';
+part 'result/contains.dart';
 part 'result/extractors.dart';
 part 'result/inspect.dart';
+part 'result/ok_or_err.dart';
 part 'result/querying_values.dart';
 part 'result/transformers.dart';
-part 'result/ok_or_err.dart';
-part 'result/contains.dart';
 
 /// `Result` is a type that that represents either success (`ok`) or failure (`err`)
 class Result<T, E> {
