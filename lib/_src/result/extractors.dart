@@ -138,4 +138,26 @@ extension Extractors<T, E> on Result<T, E> {
         return fallback;
     }
   }
+
+  /// Returns the contained `ok` (success) value
+  /// or computes it from the closure.
+  ///
+  /// ## Examples
+  ///
+  /// Basic usage:
+  ///
+  /// ```dart
+  /// int count(String x) => x.length;
+  ///
+  /// expect(ok(2).unwrapOrElse(count), 2);
+  /// expect(err('foo').unwrapOrElse(count), 3);
+  /// ```
+  T unwrapOrElse(T Function(E) fallback) {
+    switch (_type) {
+      case ResultType.ok:
+        return _ok;
+      case ResultType.err:
+        return fallback(_err);
+    }
+  }
 }
