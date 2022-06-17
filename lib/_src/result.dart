@@ -33,7 +33,7 @@ class Result<T, E> {
   ///
   /// ## Examples
   ///
-  /// Basic usage
+  /// Basic usage:
   ///
   /// ```dart
   /// switch (_type) {
