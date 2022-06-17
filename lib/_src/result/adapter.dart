@@ -16,12 +16,7 @@ extension Adapter<T, E> on Result<T, E> {
   /// expect(y.ok(), null);
   /// ```
   T? ok() {
-    switch (_type) {
-      case ResultType.ok:
-        return _okValue;
-      case ResultType.err:
-        return null;
-    }
+    return _okValue;
   }
 
   /// Converts from `Result<T, E>` to `E?`.
@@ -38,11 +33,6 @@ extension Adapter<T, E> on Result<T, E> {
   /// expect(y.err(), "An error occured");
   /// ```
   E? err() {
-    switch (_type) {
-      case ResultType.err:
-        return _errValue;
-      case ResultType.ok:
-        return null;
-    }
+    return _errValue;
   }
 }
