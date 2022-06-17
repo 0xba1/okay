@@ -4,7 +4,7 @@ part of '../result.dart';
 extension Adapter<T, E> on Result<T, E> {
   /// Converts from `Result<T, E>` to `T?`.
   ///
-  /// # Examples
+  /// ## Examples
   ///
   /// Basic usage:
   ///
@@ -26,7 +26,7 @@ extension Adapter<T, E> on Result<T, E> {
 
   /// Converts from `Result<T, E>` to `E?`.
   ///
-  /// # Examples
+  /// ## Examples
   ///
   /// Basic usage:
   ///

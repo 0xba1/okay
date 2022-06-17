@@ -4,7 +4,7 @@ part of '../result.dart';
 extension QueryingValues<T, E> on Result<T, E> {
   /// Resturns `true` if the result is `ok` (success)
   ///
-  /// # Expamples
+  /// ## Expamples
   ///
   /// Basic usage:
   ///
@@ -21,7 +21,7 @@ extension QueryingValues<T, E> on Result<T, E> {
 
   /// Returns `true` if the result is `ok` and the value matches the predicate `f`
   ///
-  /// # Examples
+  /// ## Examples
   ///
   /// ```dart
   /// Result<int, String> x = ok(9);
@@ -42,7 +42,7 @@ extension QueryingValues<T, E> on Result<T, E> {
 
   /// Resturns `true` if the result is `err` (failure)
   ///
-  /// # Expamples
+  /// ## Expamples
   ///
   /// Basic usage:
   ///
@@ -59,7 +59,7 @@ extension QueryingValues<T, E> on Result<T, E> {
 
   /// Returns `true` if the result is `err` and the value matches the predicate `f`
   ///
-  /// # Examples
+  /// ## Examples
   ///
   /// ```dart
   /// Result<int, String> y = err('An unexpected error occured');

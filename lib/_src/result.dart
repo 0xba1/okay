@@ -1,3 +1,4 @@
+import 'package:okay/_src/exceptions.dart';
 import 'package:okay/_src/result_type.dart';
 
 part 'result/adapter.dart';

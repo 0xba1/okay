@@ -8,7 +8,7 @@ extension Transformers<T, E> on Result<T, E> {
   ///
   /// This function can be used to compose the results of two functions.
   ///
-  /// # Examples
+  /// ## Examples
   ///
   /// ```dart
   /// Result<int, String> parseToInt(String value) {
@@ -39,7 +39,7 @@ extension Transformers<T, E> on Result<T, E> {
   /// Returns the provided fallback (if `err` (failure)), or
   /// applies a function to the contained value (if `ok` (success)).
   ///
-  /// # Examples
+  /// ## Examples
   ///
   /// ```dart
   /// Result<String, String> x = ok("foo");
@@ -64,7 +64,7 @@ extension Transformers<T, E> on Result<T, E> {
   /// This function can be used to unpack a successful result
   /// while handliing an error.
   ///
-  /// # Examples
+  /// ## Examples
   ///
   /// Basic usage:
   ///
@@ -103,7 +103,7 @@ extension Transformers<T, E> on Result<T, E> {
   /// This function can be used to pass through a successful result while
   /// handling an error.
   ///
-  /// # Examples
+  /// ## Examples
   ///
   /// Basic usage:
   ///

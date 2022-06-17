@@ -4,7 +4,7 @@ part of '../result.dart';
 extension Inspect<T, E> on Result<T, E> {
   /// Calls the provided closure with the contained value (if `ok`)
   ///
-  /// # Examples
+  /// ## Examples
   ///
   /// ```dart
   /// Result<int, String> parseToInt(String value) {
@@ -28,7 +28,7 @@ extension Inspect<T, E> on Result<T, E> {
 
   /// Calls the provided closure with the contained error (if `err`).
   ///
-  /// # Examples
+  /// ## Examples
   ///
   /// ```dart
   /// Result<int, String> parseToInt(String value) {
