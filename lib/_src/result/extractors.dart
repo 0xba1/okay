@@ -18,7 +18,7 @@ extension Extractors<T, E> on Result<T, E> {
   /// x.expect("Testing expect"); // Throws an exception with message `Testing expect: emergency failure`
   ///
   /// Result<int, String> y = ok(5);
-  /// print(x.expect("Should print `5`")); // 5
+  /// print(y.expect("Should print `5`")); // 5
   /// ```
   T expect(String message) {
     switch (_type) {
@@ -83,6 +83,33 @@ extension Extractors<T, E> on Result<T, E> {
       case ResultType.ok:
         throw ExpectErrException(
           errorMessage: message,
+          okString: _okValue.toString(),
+        );
+    }
+  }
+
+  /// Returns the contained `err` (failure) value.
+  ///
+  /// ## Throws an exception
+  ///
+  /// Throws an exception if the value is an `ok`, with an exception message
+  /// provided by the `ok`'s value.
+  ///
+  /// ## Examples
+  ///
+  /// ```dart
+  /// Result<int, String> x = ok(2);
+  /// x.unwrapErr(); // Throws an exception with message `called `Result.unwrapErr()` on an `ok` value: 2`
+  ///
+  /// Result<int, String> y = err('emergency failure');
+  /// expect(y.unwrapErr(), "emergency failure");
+  /// ```
+  E unwrapErr() {
+    switch (_type) {
+      case ResultType.err:
+        return _err;
+      case ResultType.ok:
+        throw UnwrapErrException(
           okString: _okValue.toString(),
         );
     }

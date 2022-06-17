@@ -1,6 +1,6 @@
 name: okay
 description: An implementation of rust's `Result` type in dart.
-version: 0.0.9
+version: 0.0.28
 homepage:
 
 environment:
@@ -14,7 +14,7 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  very_good_analysis: ^2.4.0
+  very_good_analysis: ^3.0.1
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
