@@ -7,7 +7,8 @@ extension Boolean<T, E> on Result<T, E> {
   ///
   /// ## Examples
   ///
-  /// Basic usage
+  /// Basic usage:
+  ///
   /// ```dart
   /// Result<int, String> x = ok(2);
   /// Result<String, String> y = err('late error');
@@ -41,7 +42,8 @@ extension Boolean<T, E> on Result<T, E> {
   ///
   /// ## Examples
   ///
-  /// Basic usage
+  /// Basic usage:
+  ///
   /// ```dart
   /// Result<int, String> parseToInt(String value) {
   ///   try {
@@ -69,7 +71,7 @@ extension Boolean<T, E> on Result<T, E> {
   ///
   /// ## Examples
   ///
-  /// Basic usage
+  /// Basic usage:
   ///
   /// ```dart
   /// Result<int, String> x = ok(2);
@@ -94,6 +96,33 @@ extension Boolean<T, E> on Result<T, E> {
         return Result.ok(_ok);
       case ResultType.err:
         return res;
+    }
+  }
+
+  /// Calls `op` if the result is `err`,
+  /// otherwise returns the `ok` value of `this`.
+  ///
+  /// This function can be used for control flow based on result values.
+  ///
+  /// ## Examples
+  ///
+  /// Basic usage:
+  ///
+  /// ```dart
+  /// Result<int, int> sq(int x) => ok(x * x);
+  /// Result<int, int> error(int x) => err(x);
+  ///
+  /// expect(ok(2).orElse(sq).orElse(sq), ok(2));
+  /// expect(ok(2).orElse(error).orElse(sq), ok(2));
+  /// expect(err(3).orElse(sq).orElse(error), ok(9));
+  /// expect(err(3).orElse(sq).orElse(error), err(3));
+  /// ```
+  Result<T, F> orElse<F>(Result<T, F> Function(E) op) {
+    switch (_type) {
+      case ResultType.ok:
+        return Result.ok(_ok);
+      case ResultType.err:
+        return op(_err);
     }
   }
 }
