@@ -13,18 +13,20 @@ part 'result/transformers.dart';
 /// `Result` is a type that that represents either success (`ok`) or failure (`err`)
 class Result<T, E> {
   /// Success `Result`
-  Result.ok(T okValue)
+  const Result.ok(T okValue)
       : _okValue = okValue,
+        _errValue = null,
         _type = ResultType.ok;
 
   /// Failure `Result`
-  Result.err(E errValue)
-      : _errValue = errValue,
+  const Result.err(E errValue)
+      : _okValue = null,
+        _errValue = errValue,
         _type = ResultType.ok;
 
-  T? _okValue;
-  E? _errValue;
-  late final ResultType _type;
+  final T? _okValue;
+  final E? _errValue;
+  final ResultType _type;
 
   T get _ok => _okValue!;
   E get _err => _errValue!;
