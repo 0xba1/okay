@@ -1,6 +1,6 @@
 name: okay
 description: An implementation of rust's `Result` type in dart.
-version: 0.0.40
+version: 0.0.41
 homepage:
 
 environment:
@@ -10,6 +10,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  meta: ^1.7.0
 
 dev_dependencies:
   flutter_test:

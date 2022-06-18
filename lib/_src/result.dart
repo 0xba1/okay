@@ -1,3 +1,4 @@
+import 'package:meta/meta.dart';
 import 'package:okay/_src/exceptions.dart';
 import 'package:okay/_src/result_type.dart';
 
@@ -11,6 +12,7 @@ part 'result/querying_values.dart';
 part 'result/transformers.dart';
 
 /// `Result` is a type that that represents either success (`ok`) or failure (`err`)
+@immutable
 class Result<T, E> {
   /// Success `Result`
   const Result.ok(T okValue)
@@ -48,4 +50,31 @@ class Result<T, E> {
   /// }
   /// ```
   ResultType get type => _type;
+
+  @override
+  bool operator ==(Object? other) =>
+      other is Result &&
+      other.type == _type &&
+      other._okValue == _okValue &&
+      other._errValue == _errValue;
+
+  @override
+  int get hashCode {
+    switch (_type) {
+      case ResultType.ok:
+        return Object.hash(_type, _okValue);
+      case ResultType.err:
+        return Object.hash(_type, _errValue);
+    }
+  }
+
+  @override
+  String toString() {
+    switch (_type) {
+      case ResultType.ok:
+        return 'ok( $_okValue )';
+      case ResultType.err:
+        return 'err( $_errValue )';
+    }
+  }
 }
