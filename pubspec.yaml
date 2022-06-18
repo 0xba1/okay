@@ -1,7 +1,8 @@
 name: okay
 description: An implementation of rust's `Result` type in dart.
 version: 0.0.41
-homepage:
+homepage: https://hextools.0xba1.xyz
+repository: https://github.com/0xba1/okay.git
 
 environment:
   sdk: ">=2.17.0 <3.0.0"
