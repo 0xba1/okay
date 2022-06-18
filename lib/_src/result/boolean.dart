@@ -7,8 +7,6 @@ extension Boolean<T, E> on Result<T, E> {
   ///
   /// ## Examples
   ///
-  /// Basic usage:
-  ///
   /// ```dart
   /// Result<int, String> x = ok(2);
   /// Result<String, String> y = err('late error');
@@ -30,6 +28,35 @@ extension Boolean<T, E> on Result<T, E> {
     switch (_type) {
       case ResultType.ok:
         return res;
+      case ResultType.err:
+        return Result.err(_err);
+    }
+  }
+
+  /// Calls `op` if the result is `ok`,
+  /// otherwise returns the `err` value of `this`.
+  ///
+  /// This function can be used for control flow based on `Result` values.
+  ///
+  /// ## Examples
+  ///
+  /// ```dart
+  /// Result<int, String> parseToInt(String value) {
+  ///   try {
+  ///     return ok(int.parse(value));
+  ///   } catch (_) {
+  ///     return err(value);
+  ///   }
+  /// }
+  ///
+  /// Result<String, String> x = ok('4');
+  /// Result<int, String> y = x.andThen((val) => parseToInt(val));
+  /// expect(y, ok(4));
+  /// ```
+  Result<U, E> andThen<U>(Result<U, E> Function(T) op) {
+    switch (_type) {
+      case ResultType.ok:
+        return op(_ok);
       case ResultType.err:
         return Result.err(_err);
     }
