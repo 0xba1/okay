@@ -10,14 +10,12 @@ extension QueryingValues<T, E> on Result<T, E> {
   ///
   /// ```dart
   /// Result<int, String> x = ok(9);
-  /// expect(x.isOk(), true);
+  /// expect(x.isOk, true);
   ///
   /// Result<int, String> y = err('An unexpected error occured');
-  /// expect(x.isOk(), false);
+  /// expect(x.isOk, false);
   /// ```
-  bool isOk() {
-    return _type == ResultType.ok;
-  }
+  bool get isOk => _type == ResultType.ok;
 
   /// Returns `true` if the result is `ok` and the value matches the predicate `f`
   ///
@@ -48,14 +46,12 @@ extension QueryingValues<T, E> on Result<T, E> {
   ///
   /// ```dart
   /// Result<int, String> y = err('An unexpected error occured');
-  /// expect(x.isErr(), true);
+  /// expect(x.isErr, true);
   ///
   /// Result<int, String> x = ok(0);
-  /// expect(x.isErr(), false);
+  /// expect(x.isErr, false);
   /// ```
-  bool isErr() {
-    return _type == ResultType.err;
-  }
+  bool get isErr => _type == ResultType.err;
 
   /// Returns `true` if the result is `err` and the value matches the predicate `f`
   ///

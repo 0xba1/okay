@@ -149,8 +149,8 @@ extension Extractors<T, E> on Result<T, E> {
   /// ```dart
   /// int count(String x) => x.length;
   ///
-  /// expect(ok(2).unwrapOrElse(count), 2);
-  /// expect(err('foo').unwrapOrElse(count), 3);
+  /// expect(ok<int, String>(2).unwrapOrElse(count), 2);
+  /// expect(err<int, String>('foo').unwrapOrElse(count), 3);
   /// ```
   T unwrapOrElse(T Function(E) fallback) {
     switch (_type) {

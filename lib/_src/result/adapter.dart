@@ -12,8 +12,8 @@ extension Adapter<T, E> on Result<T, E> {
   /// Result<int, String> x = ok(2);
   /// expect(x.ok(), 2);
   ///
-  /// Result<int, String> y = err("An error occured");
-  /// expect(y.ok(), null);
+  /// Result<int, String> x = err('An error occured');
+  /// expect(x.ok(), null);
   /// ```
   T? ok() {
     return _okValue;
@@ -29,8 +29,8 @@ extension Adapter<T, E> on Result<T, E> {
   /// Result<int, String> x = ok(2);
   /// expect(x.err(), null);
   ///
-  /// Result<int, String> y = err("An error occured");
-  /// expect(y.err(), "An error occured");
+  /// Result<int, String> x = err('An error occured');
+  /// expect(x.err(), 'An error occured');
   /// ```
   E? err() {
     return _errValue;

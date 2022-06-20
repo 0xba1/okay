@@ -39,7 +39,7 @@ extension Inspect<T, E> on Result<T, E> {
   ///   }
   /// }
   /// Result<int, String> x = parseToInt('four')
-  ///   .inspect((val) => print("'$val' could not be parsed into an integer")) // prints "'$four' could not be parsed into an integer"
+  ///   .inspectErr((val) => print("'$val' could not be parsed into an integer")) // prints "'$four' could not be parsed into an integer"
   /// ```
   Result<T, E> inspectErr(void Function(E) f) {
     if (_type == ResultType.err) {

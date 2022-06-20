@@ -43,10 +43,10 @@ extension Transformers<T, E> on Result<T, E> {
   ///
   /// ```dart
   /// Result<String, String> x = ok("foo");
-  /// expect(x.map_or(42, (val) => val.length), 3);
+  /// expect(x.mapOr(42, (val) => val.length), 3);
   ///
-  /// Result<String, String> y = err("foo");
-  /// expect(y.map_or(42, (val) => val.length), 42);
+  /// Result<String, String> x = err("foo");
+  /// expect(x.mapOr(42, (val) => val.length), 42);
   /// ```
   U mapOr<U>(U fallback, U Function(T) op) {
     switch (_type) {
@@ -111,10 +111,10 @@ extension Transformers<T, E> on Result<T, E> {
   /// String stringify(int x) => 'error code: $x';
   ///
   /// Result<int, int> x = ok(2);
-  /// expect(x.mapErr(stringify), ok(2));
+  /// expect(x.mapErr(stringify), ok<int, String>(2));
   ///
-  /// Result<int, int> y = err(2);
-  /// expect(y.mapErr(stringify), err('error code: 13'));
+  /// Result<int, int> y = err(13);
+  /// expect(y.mapErr(stringify), err<int, String>('error code: 13'));
   /// ```
   Result<T, F> mapErr<F>(F Function(E) op) {
     switch (_type) {
