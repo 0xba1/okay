@@ -24,14 +24,14 @@ class Result<T, E> {
   const Result.err(E errValue)
       : _okValue = null,
         _errValue = errValue,
-        _type = ResultType.ok;
+        _type = ResultType.err;
 
   final T? _okValue;
   final E? _errValue;
   final ResultType _type;
 
-  T get _ok => _okValue!;
-  E get _err => _errValue!;
+  T get _ok => _okValue as T;
+  E get _err => _errValue as E;
 
   /// Type of result; `ok` (success) or `err` (failure)
   ///
