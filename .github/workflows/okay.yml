@@ -11,4 +11,4 @@ jobs:
     with:
       coverage_excludes: "*.g.dart"
       dart_sdk: "stable"
-      working_directory: "lib/"
+      working_directory: "."
