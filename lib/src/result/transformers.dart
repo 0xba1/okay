@@ -1,4 +1,4 @@
-part of '../result.dart';
+part of '../_result.dart';
 
 /// Transforming contained values
 extension Transformers<T, E> on Result<T, E> {

@@ -1,5 +1,5 @@
 library okay;
 
-export '_src/ok_err.dart';
-export '_src/result.dart';
-export '_src/result_type.dart';
+export 'src/_ok_err.dart';
+export 'src/_result.dart';
+export 'src/_result_type.dart';

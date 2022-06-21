@@ -1,4 +1,4 @@
-part of '../result.dart';
+part of '../_result.dart';
 
 /// Querying the contained values
 extension QueryingValues<T, E> on Result<T, E> {

@@ -1,6 +1,6 @@
 import 'package:meta/meta.dart';
-import 'package:okay/_src/exceptions.dart';
-import 'package:okay/_src/result_type.dart';
+import 'package:okay/src/_exceptions.dart';
+import 'package:okay/src/_result_type.dart';
 
 part 'result/adapter.dart';
 part 'result/boolean.dart';

@@ -1,4 +1,4 @@
-part of '../result.dart';
+part of '../_result.dart';
 
 /// Boolean operations on the contained values
 extension Boolean<T, E> on Result<T, E> {

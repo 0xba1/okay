@@ -1,4 +1,4 @@
-part of '../result.dart';
+part of '../_result.dart';
 
 /// Adapter for each variant
 extension Adapter<T, E> on Result<T, E> {

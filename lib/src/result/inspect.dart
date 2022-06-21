@@ -1,4 +1,4 @@
-part of '../result.dart';
+part of '../_result.dart';
 
 /// Run closures on contained value or error
 extension Inspect<T, E> on Result<T, E> {
