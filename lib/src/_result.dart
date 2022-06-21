@@ -1,3 +1,5 @@
+// ignore_for_file: lines_longer_than_80_chars
+
 import 'package:meta/meta.dart';
 import 'package:okay/src/_exceptions.dart';
 import 'package:okay/src/_result_type.dart';
