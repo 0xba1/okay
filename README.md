@@ -22,4 +22,4 @@ Typesafe, intuitive error-handling for dart . An implementation of rust's `Resul
 [license_badge]: https://img.shields.io/badge/license-MIT-blue.svg
 [license_link]: https://opensource.org/licenses/MIT
 [result_link]: https://doc.rust-lang.org/std/result/index.html
-[coverage_badge]:
+[coverage_badge]: https://raw.githubusercontent.com/0xba1/okay/7d1ec8eeefa64c42a94c625d76f6155eafbd804b/.assets/coverage_badge.svg?token=APNI2YUJG74CB3CGFA6HUCDCWLE3C
