@@ -41,18 +41,28 @@ void main() {
   });
 
   group('Result.mapOrElse()', () {
-    String stringify(int x) => 'error code: $x';
-
     test('on `ok`', () {
-      final x = ok<int, int>(2);
+      final x = ok<int, int>(9);
 
-      expect(x.mapErr(stringify), ok<int, String>(2));
+      expect(
+        x.mapOrElse(
+          (error) => 'Failure: $error',
+          (value) => 'Success: $value',
+        ),
+        'Success: 9',
+      );
     });
 
     test('on `err`', () {
-      final x = err<int, int>(13);
+      final x = err<int, int>(81);
 
-      expect(x.mapErr(stringify), err<int, String>('error code: 13'));
+      expect(
+        x.mapOrElse(
+          (error) => 'Failure: $error',
+          (value) => 'Success: $value',
+        ),
+        'Failure: 81',
+      );
     });
   });
 }

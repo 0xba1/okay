@@ -23,6 +23,10 @@ void main() {
       final x = ok<int, String>(69);
       expect(x.unwrap(), 69);
     });
+    test('on `err`', () {
+      final x = err<int, String>('emergency failure');
+      expect(x.unwrap, throwsException);
+    });
   });
 
   group('Result.expectErr():', () {

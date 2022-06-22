@@ -125,4 +125,28 @@ void main() {
 
     expect(() => tOk.expectErr('Got expected ok'), throwsException);
   });
+
+  test('toString (`ok`)', () {
+    final tOk = ok<int, int>(9);
+
+    expect(tOk.toString(), 'ok( 9 )');
+  });
+
+  test('toString (`err`)', () {
+    final tErr = err<int, int>(81);
+
+    expect(tErr.toString(), 'err( 81 )');
+  });
+
+  test('hashcode (`ok`)', () {
+    final tOk = ok<int, int>(9);
+
+    expect(tOk.hashCode, ok<int, int>(9).hashCode);
+  });
+
+  test('hashcode (`err`)', () {
+    final tErr = err<int, int>(81);
+
+    expect(tErr.hashCode, err<int, int>(81).hashCode);
+  });
 }

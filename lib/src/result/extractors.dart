@@ -52,6 +52,9 @@ extension Extractors<T, E> on Result<T, E> {
   /// ```dart
   /// Result<int, String> x = ok(69);
   /// expect(x.unwrap(), 69);
+  ///
+  /// Result<int, String> y = err('emergency failure');
+  /// expect(y.unwrap(), "emergency failure"); // Throws an exception with message `called `Result.unwrapErr()` on an `err` value: 'emergency failure'`
   /// ```
   T unwrap() {
     switch (_type) {
