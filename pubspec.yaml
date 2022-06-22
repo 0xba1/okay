@@ -11,5 +11,6 @@ dependencies:
   meta: ^1.7.0
 
 dev_dependencies:
+  http: ^0.13.4
   test: ^1.21.2
   very_good_analysis: ^3.0.1
