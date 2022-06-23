@@ -6,9 +6,9 @@ import 'package:http/http.dart' as http;
 import 'package:okay/okay.dart';
 
 /// This example uses the Google Books API to search for books about http.
-/// If this is successful, it returns an
-/// `ok` [Result] of [Map<String, dynamic>] of books,
-///  if it fails it returns an the http status code [int].
+/// If this is successful, it returns
+/// an `ok` [Result] of [Map<String, dynamic>] of books,
+/// if it fails it returns the http status code [int].
 Future<Result<Map<String, dynamic>, int>> getBooks() async {
   final url =
       Uri.https('www.googleapis.com', '/books/v1/volumes', {'q': '{http}'});
