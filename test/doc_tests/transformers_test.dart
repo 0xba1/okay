@@ -30,13 +30,13 @@ void main() {
     test('on `ok`', () {
       final x = ok<String, String>('foo');
 
-      expect(x.mapOr(42, (val) => val.length), 3);
+      expect(x.mapOr(fallback: 42, okMap: (val) => val.length), 3);
     });
 
     test('on `err`', () {
       final x = err<String, String>('foo');
 
-      expect(x.mapOr(42, (val) => val.length), 42);
+      expect(x.mapOr(fallback: 42, okMap: (val) => val.length), 42);
     });
   });
 
@@ -46,8 +46,8 @@ void main() {
 
       expect(
         x.mapOrElse(
-          (error) => 'Failure: $error',
-          (value) => 'Success: $value',
+          errMap: (error) => 'Failure: $error',
+          okMap: (value) => 'Success: $value',
         ),
         'Success: 9',
       );
@@ -58,8 +58,8 @@ void main() {
 
       expect(
         x.mapOrElse(
-          (error) => 'Failure: $error',
-          (value) => 'Success: $value',
+          errMap: (error) => 'Failure: $error',
+          okMap: (value) => 'Success: $value',
         ),
         'Failure: 81',
       );
