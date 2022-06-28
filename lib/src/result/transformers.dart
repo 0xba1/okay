@@ -43,10 +43,10 @@ extension Transformers<T, E> on Result<T, E> {
   ///
   /// ```dart
   /// Result<String, String> x = ok("foo");
-  /// expect(x.mapOr(42, (val) => val.length), 3);
+  /// expect(x.mapOr(fallback: 42, okMap: (val) => val.length)), 3);
   ///
   /// Result<String, String> x = err("foo");
-  /// expect(x.mapOr(42, (val) => val.length), 42);
+  /// expect(x.mapOr(fallback: 42, okMap: (val) => val.length), 42);
   /// ```
   U mapOr<U>({required U fallback, required U Function(T) okMap}) {
     switch (_type) {
@@ -72,8 +72,8 @@ extension Transformers<T, E> on Result<T, E> {
   /// Result<int, int> x = ok(9);
   /// expect(
   ///   x.mapOrElse(
-  ///     (error) => 'Failed: $error',
-  ///     (value) => 'Success: $value',
+  ///     errMap: (error) => 'Failure: $error',
+  ///     okMap: (value) => 'Success: $value',
   ///   ),
   ///   'Success: 9',
   /// );
@@ -81,8 +81,8 @@ extension Transformers<T, E> on Result<T, E> {
   /// Result<int, int> x = err(81);
   /// expect(
   ///   x.mapOrElse(
-  ///     (error) => 'Failed: $error',
-  ///     (value) => 'Success: $value',
+  ///     errMap: (error) => 'Failure: $error',
+  ///     okMap: (value) => 'Success: $value',
   ///   ),
   ///   'Failed: 81',
   /// );
