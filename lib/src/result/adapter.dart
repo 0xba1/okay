@@ -10,14 +10,12 @@ extension Adapter<T, E> on Result<T, E> {
   ///
   /// ```dart
   /// Result<int, String> x = ok(2);
-  /// expect(x.ok(), 2);
+  /// expect(x.ok, 2);
   ///
   /// Result<int, String> x = err('An error occured');
-  /// expect(x.ok(), null);
+  /// expect(x.ok, null);
   /// ```
-  T? ok() {
-    return _okValue;
-  }
+  T? get ok => _okValue;
 
   /// Converts from `Result<T, E>` to `E?`.
   ///
@@ -27,12 +25,10 @@ extension Adapter<T, E> on Result<T, E> {
   ///
   /// ```dart
   /// Result<int, String> x = ok(2);
-  /// expect(x.err(), null);
+  /// expect(x.err, null);
   ///
   /// Result<int, String> x = err('An error occured');
-  /// expect(x.err(), 'An error occured');
+  /// expect(x.err, 'An error occured');
   /// ```
-  E? err() {
-    return _errValue;
-  }
+  E? get err => _errValue;
 }
