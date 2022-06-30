@@ -13,6 +13,31 @@ part 'result/querying_values.dart';
 part 'result/transformers.dart';
 
 /// `Result` is a type that that represents either success (`ok`) or failure (`err`)
+/// ## Examples
+///
+/// Basic usage:
+///
+/// ```dart
+/// class FallibleOpSuccess {}
+/// class FallibleOpFailure {}
+///
+/// Result<FallibleOpSuccess, FallibleOpFailure> fallibleOp() {
+///   if (true) {
+///     return ok(FallibleOpSuccess());
+///   } else {
+///     return err(FallibleOpFailure());
+///   }
+/// }
+///
+/// final result = fallibleOp();
+///
+/// result.inspect((value) {
+///     print('Success with value: $value');
+///   }).inspectErr((error) {
+///     print('Failure with error: $error');
+///   });
+/// }
+/// ```
 @immutable
 class Result<T, E> {
   /// Success `Result`
@@ -33,23 +58,6 @@ class Result<T, E> {
 
   T get _ok => _okValue as T;
   E get _err => _errValue as E;
-
-  /// Type of result; `ok` (success) or `err` (failure)
-  ///
-  /// ## Examples
-  ///
-  /// Basic usage:
-  ///
-  /// ```dart
-  /// switch (_type) {
-  ///   case ResultType.ok:
-  ///     print('Success');
-  ///     break;
-  ///   case ResultType.err:
-  ///     print('Failure');
-  ///     break;
-  /// }
-  /// ```
 
   @override
   bool operator ==(Object? other) =>
