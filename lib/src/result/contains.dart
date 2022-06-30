@@ -20,9 +20,9 @@ extension Contains<T, E> on Result<T, E> {
   /// ```
   bool contains(Object x) {
     switch (_type) {
-      case ResultType.ok:
+      case _ResultType.ok:
         return _ok == x;
-      case ResultType.err:
+      case _ResultType.err:
         return false;
     }
   }
@@ -45,9 +45,9 @@ extension Contains<T, E> on Result<T, E> {
   /// ```
   bool containsErr(Object x) {
     switch (_type) {
-      case ResultType.err:
+      case _ResultType.err:
         return _err == x;
-      case ResultType.ok:
+      case _ResultType.ok:
         return false;
     }
   }

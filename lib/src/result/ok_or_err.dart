@@ -19,9 +19,9 @@ extension OkOrErr<T> on Result<T, T> {
   /// ```
   T okOrErr() {
     switch (_type) {
-      case ResultType.ok:
+      case _ResultType.ok:
         return _ok;
-      case ResultType.err:
+      case _ResultType.err:
         return _err;
     }
   }

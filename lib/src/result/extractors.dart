@@ -24,9 +24,9 @@ extension Extractors<T, E> on Result<T, E> {
   /// ```
   T expect(String message) {
     switch (_type) {
-      case ResultType.ok:
+      case _ResultType.ok:
         return _ok;
-      case ResultType.err:
+      case _ResultType.err:
         throw ExpectException(
           errorMessage: message,
           errString: _errValue.toString(),
@@ -58,9 +58,9 @@ extension Extractors<T, E> on Result<T, E> {
   /// ```
   T unwrap() {
     switch (_type) {
-      case ResultType.ok:
+      case _ResultType.ok:
         return _ok;
-      case ResultType.err:
+      case _ResultType.err:
         throw UnwrapException(
           errString: _errValue.toString(),
         );
@@ -83,9 +83,9 @@ extension Extractors<T, E> on Result<T, E> {
   /// ```
   E expectErr(String message) {
     switch (_type) {
-      case ResultType.err:
+      case _ResultType.err:
         return _err;
-      case ResultType.ok:
+      case _ResultType.ok:
         throw ExpectErrException(
           errorMessage: message,
           okString: _okValue.toString(),
@@ -111,9 +111,9 @@ extension Extractors<T, E> on Result<T, E> {
   /// ```
   E unwrapErr() {
     switch (_type) {
-      case ResultType.err:
+      case _ResultType.err:
         return _err;
-      case ResultType.ok:
+      case _ResultType.ok:
         throw UnwrapErrException(
           okString: _okValue.toString(),
         );
@@ -137,9 +137,9 @@ extension Extractors<T, E> on Result<T, E> {
   /// ```
   T unwrapOr(T fallback) {
     switch (_type) {
-      case ResultType.ok:
+      case _ResultType.ok:
         return _ok;
-      case ResultType.err:
+      case _ResultType.err:
         return fallback;
     }
   }
@@ -159,9 +159,9 @@ extension Extractors<T, E> on Result<T, E> {
   /// ```
   T unwrapOrElse(T Function(E) fallback) {
     switch (_type) {
-      case ResultType.ok:
+      case _ResultType.ok:
         return _ok;
-      case ResultType.err:
+      case _ResultType.err:
         return fallback(_err);
     }
   }

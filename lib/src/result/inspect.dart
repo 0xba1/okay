@@ -20,7 +20,7 @@ extension Inspect<T, E> on Result<T, E> {
   ///   .map((val) => val * val);
   /// ```
   Result<T, E> inspect(void Function(T) f) {
-    if (_type == ResultType.ok) {
+    if (_type == _ResultType.ok) {
       f(_ok);
     }
     return this;
@@ -42,7 +42,7 @@ extension Inspect<T, E> on Result<T, E> {
   ///   .inspectErr((val) => print("'$val' could not be parsed into an integer")) // prints "'$four' could not be parsed into an integer"
   /// ```
   Result<T, E> inspectErr(void Function(E) f) {
-    if (_type == ResultType.err) {
+    if (_type == _ResultType.err) {
       f(_err);
     }
     return this;

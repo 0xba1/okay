@@ -28,9 +28,9 @@ extension Boolean<T, E> on Result<T, E> {
   /// ```
   Result<U, E> and<U>(Result<U, E> res) {
     switch (_type) {
-      case ResultType.ok:
+      case _ResultType.ok:
         return res;
-      case ResultType.err:
+      case _ResultType.err:
         return Result.err(_err);
     }
   }
@@ -59,9 +59,9 @@ extension Boolean<T, E> on Result<T, E> {
   /// ```
   Result<U, E> andThen<U>(Result<U, E> Function(T) okMap) {
     switch (_type) {
-      case ResultType.ok:
+      case _ResultType.ok:
         return okMap(_ok);
-      case ResultType.err:
+      case _ResultType.err:
         return Result.err(_err);
     }
   }
@@ -92,9 +92,9 @@ extension Boolean<T, E> on Result<T, E> {
   /// ```
   Result<T, F> or<F>(Result<T, F> res) {
     switch (_type) {
-      case ResultType.ok:
+      case _ResultType.ok:
         return Result.ok(_ok);
-      case ResultType.err:
+      case _ResultType.err:
         return res;
     }
   }
@@ -122,9 +122,9 @@ extension Boolean<T, E> on Result<T, E> {
   /// ```
   Result<T, F> orElse<F>(Result<T, F> Function(E) errMap) {
     switch (_type) {
-      case ResultType.ok:
+      case _ResultType.ok:
         return Result.ok(_ok);
-      case ResultType.err:
+      case _ResultType.err:
         return errMap(_err);
     }
   }

@@ -2,7 +2,6 @@
 
 import 'package:meta/meta.dart';
 import 'package:okay/src/_exceptions.dart';
-import 'package:okay/src/_result_type.dart';
 
 part 'result/adapter.dart';
 part 'result/boolean.dart';
@@ -20,17 +19,17 @@ class Result<T, E> {
   const Result.ok(T okValue)
       : _okValue = okValue,
         _errValue = null,
-        _type = ResultType.ok;
+        _type = _ResultType.ok;
 
   /// Failure `Result`
   const Result.err(E errValue)
       : _okValue = null,
         _errValue = errValue,
-        _type = ResultType.err;
+        _type = _ResultType.err;
 
   final T? _okValue;
   final E? _errValue;
-  final ResultType _type;
+  final _ResultType _type;
 
   T get _ok => _okValue as T;
   E get _err => _errValue as E;
@@ -51,21 +50,20 @@ class Result<T, E> {
   ///     break;
   /// }
   /// ```
-  ResultType get type => _type;
 
   @override
   bool operator ==(Object? other) =>
       other is Result &&
-      other.type == _type &&
+      other._type == _type &&
       other._okValue == _okValue &&
       other._errValue == _errValue;
 
   @override
   int get hashCode {
     switch (_type) {
-      case ResultType.ok:
+      case _ResultType.ok:
         return Object.hash(_type, _okValue);
-      case ResultType.err:
+      case _ResultType.err:
         return Object.hash(_type, _errValue);
     }
   }
@@ -73,10 +71,19 @@ class Result<T, E> {
   @override
   String toString() {
     switch (_type) {
-      case ResultType.ok:
+      case _ResultType.ok:
         return 'ok( $_okValue )';
-      case ResultType.err:
+      case _ResultType.err:
         return 'err( $_errValue )';
     }
   }
+}
+
+/// Indicating `Result` of type `ok` or `err`
+enum _ResultType {
+  /// Success `Result`
+  ok,
+
+  /// Failure `Result`
+  err,
 }

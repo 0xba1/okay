@@ -28,12 +28,9 @@ Future<Result<Map<String, dynamic>, int>> getBooks() async {
 void main() async {
   final result = await getBooks();
 
-  switch (result.type) {
-    case ResultType.ok:
-      print('Books: ${result.unwrap()}');
-      break;
-    case ResultType.err:
-      print('Http request failed with status code ${result.unwrapErr()}');
-      break;
-  }
+  result.inspect((value) {
+    print('Books: $value');
+  }).inspectErr((error) {
+    print('Http request failed with status code $error');
+  });
 }

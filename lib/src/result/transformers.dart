@@ -29,9 +29,9 @@ extension Transformers<T, E> on Result<T, E> {
   /// ```
   Result<U, E> map<U>(U Function(T) okMap) {
     switch (_type) {
-      case ResultType.ok:
+      case _ResultType.ok:
         return Result.ok(okMap(_ok));
-      case ResultType.err:
+      case _ResultType.err:
         return Result.err(_err);
     }
   }
@@ -50,9 +50,9 @@ extension Transformers<T, E> on Result<T, E> {
   /// ```
   U mapOr<U>({required U fallback, required U Function(T) okMap}) {
     switch (_type) {
-      case ResultType.ok:
+      case _ResultType.ok:
         return okMap(_ok);
-      case ResultType.err:
+      case _ResultType.err:
         return fallback;
     }
   }
@@ -92,9 +92,9 @@ extension Transformers<T, E> on Result<T, E> {
     required U Function(T) okMap,
   }) {
     switch (_type) {
-      case ResultType.ok:
+      case _ResultType.ok:
         return okMap(_ok);
-      case ResultType.err:
+      case _ResultType.err:
         return errMap(_err);
     }
   }
@@ -121,9 +121,9 @@ extension Transformers<T, E> on Result<T, E> {
   /// ```
   Result<T, F> mapErr<F>(F Function(E) errMap) {
     switch (_type) {
-      case ResultType.err:
+      case _ResultType.err:
         return Result.err(errMap(_err));
-      case ResultType.ok:
+      case _ResultType.ok:
         return Result.ok(_ok);
     }
   }

@@ -40,13 +40,11 @@ Result<FallibleOpSuccess, FallibleOpFailure> fallibleOp() {
 
 final result = fallibleOp();
 
-switch(result.type) {
-  case ResultType.ok:
-    print('Success with value: ${result.unwrap()}');
-    break;
-  case ResultType.err: 
-    print('Failure with error: ${result.unwrapErr()};');
-    break;      
+result.inspect((value) {
+    print('Success with value: $value');
+  }).inspectErr((error) {
+    print('Failure with error: $error');
+  });
 }
 ```
 

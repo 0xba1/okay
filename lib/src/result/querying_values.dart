@@ -17,7 +17,7 @@ extension QueryingValues<T, E> on Result<T, E> {
   /// Result<int, String> y = err('An unexpected error occured');
   /// expect(x.isOk, false);
   /// ```
-  bool get isOk => _type == ResultType.ok;
+  bool get isOk => _type == _ResultType.ok;
 
   /// Returns `true` if the result is `ok` and the value matches the predicate `f`
   ///
@@ -33,7 +33,7 @@ extension QueryingValues<T, E> on Result<T, E> {
   /// expect(x.isOkAnd((_) => true), false);
   /// ```
   bool isOkAnd(bool Function(T) f) {
-    if (_type == ResultType.ok) {
+    if (_type == _ResultType.ok) {
       return f(_ok);
     }
 
@@ -53,7 +53,7 @@ extension QueryingValues<T, E> on Result<T, E> {
   /// Result<int, String> x = ok(0);
   /// expect(x.isErr, false);
   /// ```
-  bool get isErr => _type == ResultType.err;
+  bool get isErr => _type == _ResultType.err;
 
   /// Returns `true` if the result is `err` and the value matches the predicate `f`
   ///
@@ -68,7 +68,7 @@ extension QueryingValues<T, E> on Result<T, E> {
   /// expect(x.isErrAnd((_) => true), false);
   /// ```
   bool isErrAnd(bool Function(E) f) {
-    if (_type == ResultType.err) {
+    if (_type == _ResultType.err) {
       return f(_err);
     }
 
