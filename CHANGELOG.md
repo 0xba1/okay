@@ -14,3 +14,7 @@ Breaking api changes: Result.ok, Result.err
 # 0.4.0
 
 Breaking api changes: removed ResultType enum from api
+
+# 0.5.0
+
+Changed dart version to 2.12
