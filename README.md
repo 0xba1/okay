@@ -3,7 +3,7 @@
 
 Typesafe, intuitive error-handling for dart . An implementation of rust's `Result` type in dart.
 
-`Result<T, E>` is a type used for returning and propagating errors. It is a type with the variants, `ok(T)`, representing success and containing a value, and `err(E)`, representing error and containing an error value.
+[`Result<T, E>`](https://pub.dev/documentation/okay/latest/okay/Result-class.html) is a type used for returning and propagating errors. It is a type with the variants, [`ok(T)`](https://pub.dev/documentation/okay/latest/okay/ok.html), representing success and containing a value, and [`err(E)`](https://pub.dev/documentation/okay/latest/okay/err.html), representing error and containing an error value.
 
 [![ci][ci_badge]][ci_link]
 [![coverage][coverage_badge]][ci_link]
