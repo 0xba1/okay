@@ -3,6 +3,8 @@
 
 Typesafe, intuitive error-handling for dart . An implementation of rust's `Result` type in dart.
 
+`Result<T, E>` is a type used for returning and propagating errors. It is a type with the variants, `ok(T)`, representing success and containing a value, and `err(E)`, representing error and containing an error value.
+
 [![ci][ci_badge]][ci_link]
 [![coverage][coverage_badge]][ci_link]
 [![pub package][pub_badge]][pub_link]
@@ -22,31 +24,101 @@ dependencies:
   okay: <latest_version>
 ```
 
-## Usage
+## Basic Usage
 
 ```dart
 import 'package:okay/okay.dart';
 
-class FallibleOpSuccess {}
 class FallibleOpFailure {}
 
-Result<FallibleOpSuccess, FallibleOpFailure> fallibleOp() {
+Result<String, FallibleOpFailure> fallibleOp() {
   if (true) {
-    return ok(FallibleOpSuccess());
+    return ok('Very good string');
   } else {
     return err(FallibleOpFailure());
   }
 }
 
+void useString(String value) {
+  //
+}
+
 final result = fallibleOp();
 
-result.inspect((value) {
-    print('Success with value: $value');
-  }).inspectErr((error) {
-    print('Failure with error: $error');
-  });
-}
+final goodString = result.inspect((value) {
+  print('Success with value: $value');
+}).inspectErr((error) {
+  print('Failure with error: $error');
+}).unwrapOr('Fallback string');
+
+useString(goodString);
 ```
+
+## _Methods and Getters Overview_
+
+### _[Extracting Contained Values](https://pub.dev/documentation/okay/latest/okay/Extractors.html)_
+
+- [expect](https://pub.dev/documentation/okay/latest/okay/Extractors/expect.html) returns contained value if ok, throws an exception with provided message if err.
+- [unwrap](https://pub.dev/documentation/okay/latest/okay/Extractors/unwrap.html) returns contained value if ok, throws an exception if err.
+- [unwrapOr](https://pub.dev/documentation/okay/latest/okay/Extractors/unwrapOr.html) returns contained value if ok, returns the provided fallback value if err.
+- [unwrapOrElse](https://pub.dev/documentation/okay/latest/okay/Extractors/unwrapOrElse.html) returns contained value if ok, returns the result of function provided if err (function takes in the contained error type and returns a value type).
+
+### _[Inspect, use the contained values without consuming the result](https://pub.dev/documentation/okay/latest/okay/Inspect.html)_
+
+-[inspect](https://pub.dev/documentation/okay/latest/okay/Inspect/inspect.html) Calls the provided closure with the contained value (if `ok`) without consuming the result
+-[inspectErr](https://pub.dev/documentation/okay/latest/okay/Inspect/inspectErr.html) Calls the provided closure with the contained error (if `err`) without consuming the result.
+
+### _[Querying the variant](https://pub.dev/documentation/okay/latest/okay/QueryingValues.html)_
+
+- [isOk](https://pub.dev/documentation/okay/latest/okay/QueryingValues/isOk.html) Returns true if of `ok` variant, false if not.
+- [isOkAnd](https://pub.dev/documentation/okay/latest/okay/QueryingValues/isOkAnd.html) Returns true if the result is `ok` and the contained value matches the provided predicate function, otherwise returns false.
+- [isErr](https://pub.dev/documentation/okay/latest/okay/QueryingValues/isErr.html) Returns true if of `err` variant, false if not.
+- [isErrAnd](https://pub.dev/documentation/okay/latest/okay/QueryingValues/isErrAnd.html) Returns true if the result is `err` and the contained value matches the provided predicate function, otherwise returns false.
+
+### _[Adapters](https://pub.dev/documentation/okay/latest/okay/Adapter.html)_
+
+- [ok](https://pub.dev/documentation/okay/latest/okay/Adapter/ok.html) converts a `Result<T, E>` to a `T?`, i.e, if ok, T, if err, null.
+
+### _[Transforming contained values](https://pub.dev/documentation/okay/latest/okay/Transformers.html)_
+
+- [mapOrElse](https://pub.dev/documentation/okay/latest/okay/Transformers/mapOrElse.html) Converts a `Result<T, E>` to a `U` given a `U errMap(E)` and a `U okMap(T)`
+- [mapOr](https://pub.dev/documentation/okay/latest/okay/Transformers/mapOr.html) Converts a `Result<T, E>` to a `U`, given a `U fallback` and `U okMap(T)`
+- [map](https://pub.dev/documentation/okay/latest/okay/Transformers/map.html) Converts a `Result<T, E>` to `Result<U, E>` by applying the provided function if to contained value if ok, or returning the original error if err.
+
+### _[OkOrErr on `Result<T, T>`](https://pub.dev/documentation/okay/latest/okay/OkOrErr.html)_
+
+- [okOrErr](https://pub.dev/documentation/okay/latest/okay/OkOrErr/okOrErr.html) Returns value if `ok` or error if `err` (as the most precise same type `T`).
+
+### _[Compair contained ok or err values](https://pub.dev/documentation/okay/latest/okay/Contains.html)_
+
+-[contains](https://pub.dev/documentation/okay/latest/okay/Contains/contains.html) Returns true if the result is an `ok` value containing the given value, otherwise returns false
+-[containsErr](https://pub.dev/documentation/okay/latest/okay/Contains/containsErr.html) Returns true if the result is an `err` value containing the given value, otherwise returns false
+
+### _[Boolean operators](https://pub.dev/documentation/okay/latest/okay/Boolean.html)_
+
+These methods treat the `Result` as a boolean value, where the `ok` variant is acts like `true` and `err` acts like `false`.
+
+The `[and](https://pub.dev/documentation/okay/latest/okay/Boolean/and.html)` and `[or](https://pub.dev/documentation/okay/latest/okay/Boolean/or.html)` take another `Result` as input, and produce `Result` as output. The `[and](https://pub.dev/documentation/okay/latest/okay/Boolean/and.html)` method can produce a `Result<U, E>` value having a different inner type `U` than `Result<T, E>`. The `[or](https://pub.dev/documentation/okay/latest/okay/Boolean/or.html)` method can produce a `Result<T, F>` value having a different error type `F` than `Result<T, E>`.
+
+| method | this | input | output |
+| ------ | ---- | ----- | ------ |
+| `[and](https://pub.dev/documentation/okay/latest/okay/Boolean/and.html)` | `err(e)` | -- | `err(e)`|
+| `[and](https://pub.dev/documentation/okay/latest/okay/Boolean/and.html)` | `ok(x)` | `err(d)` | `err(d)` |
+| `[and](https://pub.dev/documentation/okay/latest/okay/Boolean/and.html)` | `ok(x)` | `ok(y)` | `ok(y)` |
+| `[or](https://pub.dev/documentation/okay/latest/okay/Boolean/or.html)` | `err(e)` | `err(d)` | `err(d)` |
+| `[or](https://pub.dev/documentation/okay/latest/okay/Boolean/or.html)` | `err(e)` | `ok(y)` | `ok(y)` |
+| `[or](https://pub.dev/documentation/okay/latest/okay/Boolean/or.html)` | `ok(x)` | -- | `ok(x)` |
+
+The `[andThen](https://pub.dev/documentation/okay/latest/okay/Boolean/andThen.html)` and `[orElse](https://pub.dev/documentation/okay/latest/okay/Boolean/orElse.html)` methods take a function as input, and only evaluate the function when they need to produce a new value. The `[andThen](https://pub.dev/documentation/okay/latest/okay/Boolean/andThen.html)` method can produce a `Result<U, E>` value having a different inner type `U` than `Result<T, E>`. The `[orElse](https://pub.dev/documentation/okay/latest/okay/Boolean/orElse.html)` method can produce a `Result<T, F>` value having a different error type `F` than `Result<T, E>`.
+
+| method | this | function input | function result | output |
+| ------ | ---- | -------------- | --------------- | ------ |
+| `[andThen](https://pub.dev/documentation/okay/latest/okay/Boolean/andThen.html)` | `err(e)` | -- | -- | `err(e)`|
+| `[andThen](https://pub.dev/documentation/okay/latest/okay/Boolean/andThen.html)` | `ok(x)` | `x` | `err(d)` | `err(d)` |
+| `[andThen](https://pub.dev/documentation/okay/latest/okay/Boolean/andThen.html)` | `ok(x)` | `x` | `ok(y)` | `ok(y)` |
+| `[orElse](https://pub.dev/documentation/okay/latest/okay/Boolean/orElse.html)` | `err(e)` | `e` | `err(d)` | `err(d)` |
+| `[orElse](https://pub.dev/documentation/okay/latest/okay/Boolean/orElse.html)` | `err(e)` | `e` | `ok(y)` | `ok(y)` |
+| `[orElse](https://pub.dev/documentation/okay/latest/okay/Boolean/orElse.html)` | `ok(x)` | -- | -- | `ok(x)` |
 
 [ci_badge]: https://img.shields.io/github/workflow/status/0xba1/okay/okay
 [ci_link]: https://github.com/0xba1/okay/actions

@@ -18,7 +18,7 @@ extension Contains<T, E> on Result<T, E> {
   /// Result<int, String> x = err('Some error message');
   /// expect(x.contains(2), false);
   /// ```
-  bool contains(Object x) {
+  bool contains(Object? x) {
     switch (_type) {
       case _ResultType.ok:
         return _ok == x;
@@ -43,7 +43,7 @@ extension Contains<T, E> on Result<T, E> {
   /// Result<int, String> x = err('Some other error message');
   /// expect(x.contains('Some error message'), false);
   /// ```
-  bool containsErr(Object x) {
+  bool containsErr(Object? x) {
     switch (_type) {
       case _ResultType.err:
         return _err == x;
