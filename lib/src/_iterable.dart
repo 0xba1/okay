@@ -8,13 +8,20 @@ extension Collect<T, E> on Iterable<Result<T, E>> {
   /// ## Basic usage
   ///
   /// ```dart
-  /// final list = [ok(4), ok(7), ok(2), err('first'), ok(9), err('second')];
+  /// final list = <Result<int, String>>[
+  ///   ok(4),
+  ///   ok(7),
+  ///   ok(2),
+  ///   err('first'),
+  ///   ok(9),
+  ///   err('second'),
+  /// ];
   /// final resultList = list.collect();
-  /// expect(resultList, err('first'));
+  /// expect(resultList, err<Iterable<int>, String>('first'));
   ///
-  /// final list = [ok(1), ok(2), ok(3), ok(4)];
+  /// final list = <Result<int, String>>[ok(1), ok(2), ok(3), ok(4)];
   /// final resultList = list.collect();
-  /// expect(resultList, ok([1, 2, 3, 4]));
+  /// expect(resultList.unwrap(), [1, 2, 3, 4]);
   /// ```
   Result<Iterable<T>, E> collect() {
     if (any((result) => result.isErr)) {
@@ -33,11 +40,18 @@ extension Collect<T, E> on Iterable<Result<T, E>> {
   /// ## Basic usage
   ///
   /// ```dart
-  /// final list = [ok(4), ok(7), ok(2), err('first'), ok(9), err('second')];
+  /// final list = <Result<int, String>>[
+  ///   ok(4),
+  ///   ok(7),
+  ///   ok(2),
+  ///   err('first'),
+  ///   ok(9),
+  ///   err('second'),
+  /// ];
   /// final valueList = list.collectOr(0);
   /// expect(valueList, [4, 7, 2, 0, 9, 0]);
   ///
-  /// final list = [ok(1), ok(2), ok(3), ok(4)];
+  /// final list = <Result<int, String>>[ok(1), ok(2), ok(3), ok(4)];
   /// final valueList = list.collectOr(0);
   /// expect(valueList, [1, 2, 3, 4]);
   /// ```
@@ -57,11 +71,18 @@ extension Collect<T, E> on Iterable<Result<T, E>> {
   /// ## Basic usage
   ///
   /// ```dart
-  /// final list = [ok(4), ok(7), ok(2), err('first'), ok(9), err('second')];
+  /// final list = <Result<int, String>>[
+  ///   ok(4),
+  ///   ok(7),
+  ///   ok(2),
+  ///   err('first'),
+  ///   ok(9),
+  ///   err('second'),
+  /// ];
   /// final valueList = list.collectOrElse((error) => error.length);
   /// expect(valueList, [4, 7, 2, 5, 9, 6]);
   ///
-  /// final list = [ok(1), ok(2), ok(3), ok(4)];
+  /// final list = <Result<int, String>>[ok(1), ok(2), ok(3), ok(4)];
   /// final valueList = list.collectOrElse((error) => error.length);
   /// expect(valueList, [1, 2, 3, 4]);
   /// ```
