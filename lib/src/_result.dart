@@ -61,7 +61,7 @@ class Result<T, E> {
 
   @override
   bool operator ==(Object? other) =>
-      other is Result &&
+      other is Result<T, E> &&
       other._type == _type &&
       other._okValue == _okValue &&
       other._errValue == _errValue;

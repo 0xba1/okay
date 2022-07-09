@@ -27,7 +27,7 @@ extension Transformers<T, E> on Result<T, E> {
   /// expect(isStringGreaterThanFive("4"), ok<bool, String>(false));
   /// expect(isStringGreaterThanFive("five"), err<bool, String>("five"));
   /// ```
-  Result<U, E> map<U>(U Function(T) okMap) {
+  Result<U, E> map<U>(U Function(T value) okMap) {
     switch (_type) {
       case _ResultType.ok:
         return Result.ok(okMap(_ok));
@@ -48,7 +48,7 @@ extension Transformers<T, E> on Result<T, E> {
   /// Result<String, String> x = err("foo");
   /// expect(x.mapOr(fallback: 42, okMap: (val) => val.length), 42);
   /// ```
-  U mapOr<U>({required U fallback, required U Function(T) okMap}) {
+  U mapOr<U>({required U fallback, required U Function(T value) okMap}) {
     switch (_type) {
       case _ResultType.ok:
         return okMap(_ok);
@@ -88,8 +88,8 @@ extension Transformers<T, E> on Result<T, E> {
   /// );
   /// ```
   U mapOrElse<U>({
-    required U Function(E) errMap,
-    required U Function(T) okMap,
+    required U Function(E error) errMap,
+    required U Function(T value) okMap,
   }) {
     switch (_type) {
       case _ResultType.ok:
@@ -119,7 +119,7 @@ extension Transformers<T, E> on Result<T, E> {
   /// Result<int, int> y = err(13);
   /// expect(y.mapErr(stringify), err<int, String>('error code: 13'));
   /// ```
-  Result<T, F> mapErr<F>(F Function(E) errMap) {
+  Result<T, F> mapErr<F>(F Function(E error) errMap) {
     switch (_type) {
       case _ResultType.err:
         return Result.err(errMap(_err));

@@ -32,7 +32,7 @@ extension QueryingValues<T, E> on Result<T, E> {
   /// Result<int, String> y = err('An unexpected error occured');
   /// expect(x.isOkAnd((_) => true), false);
   /// ```
-  bool isOkAnd(bool Function(T) f) {
+  bool isOkAnd(bool Function(T value) f) {
     if (_type == _ResultType.ok) {
       return f(_ok);
     }
@@ -67,7 +67,7 @@ extension QueryingValues<T, E> on Result<T, E> {
   /// Result<int, String> x = ok(0);
   /// expect(x.isErrAnd((_) => true), false);
   /// ```
-  bool isErrAnd(bool Function(E) f) {
+  bool isErrAnd(bool Function(E error) f) {
     if (_type == _ResultType.err) {
       return f(_err);
     }

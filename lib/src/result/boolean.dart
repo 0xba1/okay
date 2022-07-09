@@ -57,7 +57,7 @@ extension Boolean<T, E> on Result<T, E> {
   /// Result<int, String> y = x.andThen(parseToInt);
   /// expect(y, ok(4));
   /// ```
-  Result<U, E> andThen<U>(Result<U, E> Function(T) okMap) {
+  Result<U, E> andThen<U>(Result<U, E> Function(T value) okMap) {
     switch (_type) {
       case _ResultType.ok:
         return okMap(_ok);
@@ -120,7 +120,7 @@ extension Boolean<T, E> on Result<T, E> {
   ///
   /// expect(err<int, int>(3).orElse(error).orElse(error), err<int, int>(3));
   /// ```
-  Result<T, F> orElse<F>(Result<T, F> Function(E) errMap) {
+  Result<T, F> orElse<F>(Result<T, F> Function(E error) errMap) {
     switch (_type) {
       case _ResultType.ok:
         return Result.ok(_ok);

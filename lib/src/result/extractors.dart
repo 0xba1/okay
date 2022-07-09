@@ -157,7 +157,7 @@ extension Extractors<T, E> on Result<T, E> {
   /// expect(ok<int, String>(2).unwrapOrElse(count), 2);
   /// expect(err<int, String>('foo').unwrapOrElse(count), 3);
   /// ```
-  T unwrapOrElse(T Function(E) fallback) {
+  T unwrapOrElse(T Function(E error) fallback) {
     switch (_type) {
       case _ResultType.ok:
         return _ok;
