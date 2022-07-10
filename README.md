@@ -1,7 +1,7 @@
 
 # okay
 
-Typed error-handling for dart.
+Typed error-handling for dart. An implementation of rust's [`Result`][result_link] type.
 
 [`Result<T, E>`](https://pub.dev/documentation/okay/latest/okay/Result-class.html) is a type used for returning and propagating errors. It is a type with the variants, [`ok(T)`](https://pub.dev/documentation/okay/latest/okay/ok.html), representing success and containing a value, and [`err(E)`](https://pub.dev/documentation/okay/latest/okay/err.html), representing error and containing an error value.
 
@@ -39,10 +39,6 @@ Result<String, FallibleOpFailure> fallibleOp() {
   }
 }
 
-void useString(String value) {
-  //
-}
-
 final result = fallibleOp();
 
 final goodString = result.inspect((value) {
@@ -52,6 +48,14 @@ final goodString = result.inspect((value) {
 }).unwrapOr('Fallback string');
 
 useString(goodString);
+
+
+
+
+void useString(String value) {
+  //
+}
+
 ```
 
 ## _Methods and Getters Overview_
