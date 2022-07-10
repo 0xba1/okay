@@ -1,7 +1,7 @@
 
 # okay
 
-Typesafe, intuitive error-handling for dart . An implementation of rust's `Result` type in dart.
+Typed error-handling for dart.
 
 [`Result<T, E>`](https://pub.dev/documentation/okay/latest/okay/Result-class.html) is a type used for returning and propagating errors. It is a type with the variants, [`ok(T)`](https://pub.dev/documentation/okay/latest/okay/ok.html), representing success and containing a value, and [`err(E)`](https://pub.dev/documentation/okay/latest/okay/err.html), representing error and containing an error value.
 
@@ -121,6 +121,14 @@ The [`andThen`](https://pub.dev/documentation/okay/latest/okay/Boolean/andThen.h
 | [`orElse`](https://pub.dev/documentation/okay/latest/okay/Boolean/orElse.html) | `err(e)` | `e` | `err(d)` | `err(d)` |
 | [`orElse`](https://pub.dev/documentation/okay/latest/okay/Boolean/orElse.html) | `err(e)` | `e` | `ok(y)` | `ok(y)` |
 | [`orElse`](https://pub.dev/documentation/okay/latest/okay/Boolean/orElse.html) | `ok(x)` | -- | -- | `ok(x)` |
+
+### [Extension methods on `Iterable<Result<T, E>>`](https://pub.dev/documentation/okay/latest/okay/Collect.html)
+
+- [`collect`](https://pub.dev/documentation/okay/latest/okay/Collect/collect.html) Convert an `Iterable<Result<T, E>>` to a `Result<Iterable<T>, E>`. If there is an err in the iterable, the first err is returned.
+
+- [collectOr](https://pub.dev/documentation/okay/latest/okay/Collect/collectOr.html) Converts an `Iterable<Result<T, E>>` to a `<Iterable<T>`. All err values are replaced by the provided fallback.
+
+- [collectOrElse](https://pub.dev/documentation/okay/latest/okay/Collect/collectOrElse.html) Converts an `Iterable<Result<T, E>>` to a `<Iterable<T>`. All err values are replaced by the result of the provided function.
 
 [ci_badge]: https://img.shields.io/github/workflow/status/0xba1/okay/okay
 [ci_link]: https://github.com/0xba1/okay/actions

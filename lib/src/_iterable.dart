@@ -1,6 +1,6 @@
 import 'package:okay/src/_result.dart';
 
-/// Converts an `Iterable<Result<T, E>>` to a `Result<Iterable<T>, E>`
+/// Methods on `Iterable<Result<T, E>>`
 extension Collect<T, E> on Iterable<Result<T, E>> {
   /// Convert an `Iterable<Result<T, E>>` to a `Result<Iterable<T>, E>`.
   /// If there is an `err` in the iterable the first `err` is returned.
@@ -24,14 +24,14 @@ extension Collect<T, E> on Iterable<Result<T, E>> {
   /// expect(resultList.unwrap(), [1, 2, 3, 4]);
   /// ```
   Result<Iterable<T>, E> collect() {
-    if (any((result) => result.isErr)) {
+    try {
       final error = firstWhere(
         (Result<T, E> result) => result.isErr,
       ).unwrapErr();
       return Result.err(error);
+    } catch (_) {
+      return Result.ok(map((Result<T, E> result) => result.unwrap()));
     }
-
-    return Result.ok(map((Result<T, E> result) => result.unwrap()));
   }
 
   /// Converts an `Iterable<Result<T, E>>` to a `<Iterable<T>`.
@@ -57,11 +57,7 @@ extension Collect<T, E> on Iterable<Result<T, E>> {
   /// ```
   Iterable<T> collectOr(T fallback) {
     return map((Result<T, E> result) {
-      if (result.isErr) {
-        return fallback;
-      }
-
-      return result.unwrap();
+      return result.unwrapOr(fallback);
     });
   }
 
@@ -88,11 +84,7 @@ extension Collect<T, E> on Iterable<Result<T, E>> {
   /// ```
   Iterable<T> collectOrElse(T Function(E error) errMap) {
     return map((Result<T, E> result) {
-      if (result.isErr) {
-        return errMap(result.unwrapErr());
-      }
-
-      return result.unwrap();
+      return result.unwrapOrElse(errMap);
     });
   }
 }
