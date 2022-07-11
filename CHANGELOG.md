@@ -22,3 +22,10 @@ Changed dart version to 2.12
 # 0.6.0
 
 Created extension Collect<T, E> on Iterable<Result<T, E>>: Iterable.collect, Iterable.collectOr, Iterable.collectOrElse
+
+# 1.0.0
+
+- Initial stable release.
+- Better readme and example.
+- Removed `ResultType` from api.
+- Added methods on `Iterable` of `Result`.
