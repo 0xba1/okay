@@ -58,7 +58,7 @@ void useString(String value) {
 
 ```
 
-## _Methods and Getters Overview_
+## Methods and Getters Overview
 
 ---
 

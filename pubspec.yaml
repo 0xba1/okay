@@ -1,6 +1,6 @@
 name: okay
 description: Typesafe error-handling for dart . An implementation of rust's `Result` type in dart.
-version: 0.6.1
+version: 1.0.0
 homepage: https://hextools.0xba1.xyz
 repository: https://github.com/0xba1/okay.git
 
