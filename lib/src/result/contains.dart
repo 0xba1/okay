@@ -1,6 +1,6 @@
 part of '../_result.dart';
 
-/// Compairs contained `ok` or `err` value
+/// Compares contained `ok` or `err` value
 extension Contains<T, E> on Result<T, E> {
   /// Returns `true` if the result is an `ok` (success) value
   /// containing the given value.

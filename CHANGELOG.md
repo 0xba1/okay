@@ -29,3 +29,7 @@ Created extension Collect<T, E> on Iterable<Result<T, E>>: Iterable.collect, Ite
 - Better readme and example.
 - Removed `ResultType` from api.
 - Added methods on `Iterable` of `Result`.
+
+# 1.0.1
+
+- Fixed typo.

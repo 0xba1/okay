@@ -95,7 +95,7 @@ void useString(String value) {
 
 - [`okOrErr`](https://pub.dev/documentation/okay/latest/okay/OkOrErr/okOrErr.html) Returns value if `ok` or error if `err` (as the most precise same type `T`).
 
-### [Compair contained ok or err values](https://pub.dev/documentation/okay/latest/okay/Contains.html)_
+### [Compare contained ok or err values](https://pub.dev/documentation/okay/latest/okay/Contains.html)_
 
 - [`contains`](https://pub.dev/documentation/okay/latest/okay/Contains/contains.html) Returns true if the result is an `ok` value containing the given value, otherwise returns false
 - [`containsErr`](https://pub.dev/documentation/okay/latest/okay/Contains/containsErr.html) Returns true if the result is an `err` value containing the given value, otherwise returns false
