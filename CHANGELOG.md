@@ -1,27 +1,11 @@
 
-# 0.1.0
+# 1.1.0
 
-Initial release
+- Added `Result.when` method.
 
-# 0.2.0
+# 1.0.1
 
-Breaking api changes: Result.mapOrElse(), Result.mapOr()
-
-# 0.3.0
-
-Breaking api changes: Result.ok, Result.err
-
-# 0.4.0
-
-Breaking api changes: removed ResultType enum from api
-
-# 0.5.0
-
-Changed dart version to 2.12
-
-# 0.6.0
-
-Created extension Collect<T, E> on Iterable<Result<T, E>>: Iterable.collect, Iterable.collectOr, Iterable.collectOrElse
+- Fixed typo.
 
 # 1.0.0
 
@@ -30,10 +14,26 @@ Created extension Collect<T, E> on Iterable<Result<T, E>>: Iterable.collect, Ite
 - Removed `ResultType` from api.
 - Added methods on `Iterable` of `Result`.
 
-# 1.0.1
+# 0.6.0
 
-- Fixed typo.
+Created extension Collect<T, E> on Iterable<Result<T, E>>: Iterable.collect, Iterable.collectOr, Iterable.collectOrElse
 
-# 1.1.0
+# 0.5.0
 
-- Added `Result.when` method.
+Changed dart version to 2.12
+
+# 0.4.0
+
+Breaking api changes: removed ResultType enum from api
+
+# 0.3.0
+
+Breaking api changes: Result.ok, Result.err
+
+# 0.2.0
+
+Breaking api changes: Result.mapOrElse(), Result.mapOr()
+
+# 0.1.0
+
+Initial release
