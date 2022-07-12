@@ -87,6 +87,7 @@ void useString(String value) {
 
 ### [Transforming contained values](https://pub.dev/documentation/okay/latest/okay/Transformers.html)
 
+- [`when`](https://pub.dev/documentation/okay/latest/okay/Transformers/when.html) Converts a `Result<T, E>` to a `U` given a `U errMap(E)` and a `U okMap(T)`
 - [`mapOrElse`](https://pub.dev/documentation/okay/latest/okay/Transformers/mapOrElse.html) Converts a `Result<T, E>` to a `U` given a `U errMap(E)` and a `U okMap(T)`
 - [`mapOr`](https://pub.dev/documentation/okay/latest/okay/Transformers/mapOr.html) Converts a `Result<T, E>` to a `U`, given a `U fallback` and `U okMap(T)`
 - [`map`](https://pub.dev/documentation/okay/latest/okay/Transformers/map.html) Converts a `Result<T, E>` to `Result<U, E>` by applying the provided function if to contained value if ok, or returning the original error if err.

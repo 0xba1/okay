@@ -10,6 +10,32 @@ void main() {
     }
   }
 
+  group('Result.when()', () {
+    test('on `ok`', () {
+      final x = ok<int, int>(9);
+
+      expect(
+        x.when(
+          err: (error) => 'Failure: $error',
+          ok: (value) => 'Success: $value',
+        ),
+        'Success: 9',
+      );
+    });
+
+    test('on `err`', () {
+      final x = err<int, int>(81);
+
+      expect(
+        x.when(
+          err: (error) => 'Failure: $error',
+          ok: (value) => 'Success: $value',
+        ),
+        'Failure: 81',
+      );
+    });
+  });
+
   group('Result.map()', () {
     Result<bool, String> isStringGreaterThanFive(String value) {
       return parseToInt(value).map((int val) => val > 5);

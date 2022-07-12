@@ -2,6 +2,41 @@ part of '../_result.dart';
 
 /// Transforming contained values
 extension Transformers<T, E> on Result<T, E> {
+  /// Maps a `Result<T, E>` to `U`
+  ///
+  /// This function can be used to unpack a successful result
+  /// while handliing an error.
+  ///
+  /// ## Examples
+  ///
+  /// Basic usage:
+  ///
+  /// ```dart
+  /// Result<int, int> x = ok(9);
+  /// expect(
+  ///   x.when(
+  ///     err: (error) => 'Failure: $error',
+  ///     ok: (value) => 'Success: $value',
+  ///   ),
+  ///   'Success: 9',
+  /// );
+  ///
+  /// Result<int, int> x = err(81);
+  /// expect(
+  ///   x.when(
+  ///     err: (error) => 'Failure: $error',
+  ///     ok: (value) => 'Success: $value',
+  ///   ),
+  ///   'Failed: 81',
+  /// );
+  /// ```
+  U when<U>({
+    required U Function(T value) ok,
+    required U Function(E error) err,
+  }) {
+    return mapOrElse(errMap: err, okMap: ok);
+  }
+
   /// Maps a `Result<T, E>` to `Result<U, E>` by applying a function to a
   /// contained `ok` (success) value, and leaving an `err` (failure) value
   /// untouched.

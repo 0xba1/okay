@@ -33,3 +33,7 @@ Created extension Collect<T, E> on Iterable<Result<T, E>>: Iterable.collect, Ite
 # 1.0.1
 
 - Fixed typo.
+
+# 1.1.0
+
+- Added `Result.when` method.
