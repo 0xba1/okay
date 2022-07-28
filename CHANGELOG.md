@@ -1,4 +1,8 @@
 
+# 1.2.0
+
+- Added `sieve` method on `Iterable<Result<T, E>>`
+
 # 1.1.0
 
 - Added `Result.when` method.

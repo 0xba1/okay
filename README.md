@@ -68,6 +68,8 @@ void useString(String value) {
 - [`unwrap`](https://pub.dev/documentation/okay/latest/okay/Extractors/unwrap.html) returns contained value if `ok`, throws an exception if `err`.
 - [`unwrapOr`](https://pub.dev/documentation/okay/latest/okay/Extractors/unwrapOr.html) returns contained value if `ok`, returns the provided fallback value if `err`.
 - [`unwrapOrElse`](https://pub.dev/documentation/okay/latest/okay/Extractors/unwrapOrElse.html) returns contained value if `ok`, returns the result of function provided if `err` (function takes in the contained error type and returns a value type).
+- [`expectErr`](https://pub.dev/documentation/okay/latest/okay/Extractors/expectErr.html) returns contained error if err, throws an exception with provided message if `ok`.
+- [`unwrapErr`](https://pub.dev/documentation/okay/latest/okay/Extractors/unwrapErr.html) returns contained error if `err`, throws an exception if `ok`.
 
 ### [Inspect, use the contained values without consuming the result](https://pub.dev/documentation/okay/latest/okay/Inspect.html)
 
@@ -91,6 +93,7 @@ void useString(String value) {
 - [`mapOrElse`](https://pub.dev/documentation/okay/latest/okay/Transformers/mapOrElse.html) Converts a `Result<T, E>` to a `U` given a `U errMap(E)` and a `U okMap(T)`
 - [`mapOr`](https://pub.dev/documentation/okay/latest/okay/Transformers/mapOr.html) Converts a `Result<T, E>` to a `U`, given a `U fallback` and `U okMap(T)`
 - [`map`](https://pub.dev/documentation/okay/latest/okay/Transformers/map.html) Converts a `Result<T, E>` to `Result<U, E>` by applying the provided function if to contained value if ok, or returning the original error if err.
+- [`mapErr`](https://pub.dev/documentation/okay/latest/okay/Transformers/mapErr.html) Converts a `Result<T, E>` to `Result<T, F>` by applying the provided function if to contained error if err, or returning the original ok if ok.
 
 ### [OkOrErr on `Result<T, T>`](https://pub.dev/documentation/okay/latest/okay/OkOrErr.html)
 
@@ -130,10 +133,9 @@ The [`andThen`](https://pub.dev/documentation/okay/latest/okay/Boolean/andThen.h
 ### [Extension methods on `Iterable<Result<T, E>>`](https://pub.dev/documentation/okay/latest/okay/Collect.html)
 
 - [`collect`](https://pub.dev/documentation/okay/latest/okay/Collect/collect.html) Convert an `Iterable<Result<T, E>>` to a `Result<Iterable<T>, E>`. If there is an err in the iterable, the first err is returned.
-
 - [collectOr](https://pub.dev/documentation/okay/latest/okay/Collect/collectOr.html) Converts an `Iterable<Result<T, E>>` to a `<Iterable<T>`. All err values are replaced by the provided fallback.
-
 - [collectOrElse](https://pub.dev/documentation/okay/latest/okay/Collect/collectOrElse.html) Converts an `Iterable<Result<T, E>>` to a `<Iterable<T>`. All err values are replaced by the result of the provided function.
+- [sieve](https://pub.dev/documentation/okay/latest/okay/Collect/sieve.html) Converts an `Iterable<Result<T, E>>` to a `<Iterable<T>`. All err values skipped.
 
 [ci_badge]: https://img.shields.io/github/workflow/status/0xba1/okay/okay
 [ci_link]: https://github.com/0xba1/okay/actions

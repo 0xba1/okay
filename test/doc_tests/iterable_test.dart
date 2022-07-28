@@ -86,4 +86,40 @@ void main() {
       expect(valueList, [1, 2, 3, 4]);
     });
   });
+
+  group('Iterable.sieve', () {
+    test('List with `err`', () {
+      final list = <Result<int, String>>[
+        ok(4),
+        ok(7),
+        ok(2),
+        err('first'),
+        ok(9),
+        err('second')
+      ];
+      final valueList = list.sieve();
+      expect(valueList, [4, 7, 2, 9]);
+    });
+
+    test('List with no `err` returns `ok`', () {
+      final list = <Result<int, String>>[
+        ok(1),
+        ok(2),
+        ok(3),
+        ok(4),
+      ];
+      final valueList = list.sieve();
+      expect(valueList, [1, 2, 3, 4]);
+    });
+
+    test('List with only `err`', () {
+      final list = <Result<int, String>>[
+        err('Bad'),
+        err('Really bad'),
+        err('Really really bad'),
+      ];
+      final valueList = list.sieve();
+      expect(valueList, <int>[]);
+    });
+  });
 }
