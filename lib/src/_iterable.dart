@@ -109,7 +109,11 @@ extension Collect<T, E> on Iterable<Result<T, E>> {
   /// final valueList = list.sieve();
   /// expect(valueList, [1, 2, 3, 4]);
   ///
-  /// final list = <Result<int, String>>[err('Bad'), err('Really bad'), err('Really really bad')];
+  /// final list = <Result<int, String>>[
+  ///   err('Bad'),
+  ///   err('Really bad'),
+  ///   err('Really really bad'),
+  /// ];
   /// final valueList = list.sieve();
   /// expect(valueList, <int>[]);
   /// ```
