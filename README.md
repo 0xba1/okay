@@ -31,6 +31,25 @@ import 'package:okay/okay.dart';
 
 class FallibleOpFailure {}
 
+final result = fallibleOp();
+
+final goodString = result.when(
+  ok: (value) {
+    print('Success with value: $value');
+    return value;
+  },
+  err: (error) {
+    print('Failure with error: $error');
+    return 'Fallback string';
+  },
+);
+
+useString(goodString);
+
+void useString(String value) {
+  //
+}
+
 Result<String, FallibleOpFailure> fallibleOp() {
   if (true) {
     return ok('Very good string');
@@ -38,24 +57,6 @@ Result<String, FallibleOpFailure> fallibleOp() {
     return err(FallibleOpFailure());
   }
 }
-
-final result = fallibleOp();
-
-final goodString = result.inspect((value) {
-  print('Success with value: $value');
-}).inspectErr((error) {
-  print('Failure with error: $error');
-}).unwrapOr('Fallback string');
-
-useString(goodString);
-
-
-
-
-void useString(String value) {
-  //
-}
-
 ```
 
 ## Methods and Getters Overview

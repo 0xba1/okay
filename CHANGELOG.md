@@ -1,4 +1,9 @@
 
+# 1.2.1
+
+- Improved readme
+- Added nullable values and errors test
+
 # 1.2.0
 
 - Added `sieve` method on `Iterable<Result<T, E>>`

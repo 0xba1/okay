@@ -149,4 +149,16 @@ void main() {
 
     expect(tErr.hashCode, err<int, int>(81).hashCode);
   });
+
+  test('Nullable values and errors', () {
+    const String? nullOk = null;
+    const int? nullErr = null;
+
+    final okResult = ok<String?, int?>(nullOk);
+
+    final errResult = err<String?, int?>(nullErr);
+
+    expect(okResult.unwrap(), nullOk);
+    expect(errResult.unwrapErr(), nullErr);
+  });
 }

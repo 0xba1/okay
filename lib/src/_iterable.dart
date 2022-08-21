@@ -118,8 +118,7 @@ extension Collect<T, E> on Iterable<Result<T, E>> {
   /// expect(valueList, <int>[]);
   /// ```
   Iterable<T> sieve() {
-    final onlyOk = where((Result<T, E> result) => result.isOk);
-
-    return onlyOk.map((Result<T, E> result) => result.unwrap());
+    return where((Result<T, E> result) => result.isOk)
+        .map((Result<T, E> result) => result.unwrap());
   }
 }
