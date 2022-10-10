@@ -1,4 +1,9 @@
 
+# 1.3.0
+
+- Added `sieveErr` method on `Iterable<Result<T, E>>`
+- Moved methods to class declaration for visibility
+
 # 1.2.1
 
 - Improved readme
