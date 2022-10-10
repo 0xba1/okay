@@ -1,4 +1,8 @@
 
+# 1.3.1
+
+- Updated readme
+
 # 1.3.0
 
 - Added `sieveErr` method on `Iterable<Result<T, E>>`
