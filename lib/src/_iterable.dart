@@ -121,4 +121,38 @@ extension Collect<T, E> on Iterable<Result<T, E>> {
     return where((Result<T, E> result) => result.isOk)
         .map((Result<T, E> result) => result.unwrap());
   }
+
+  /// Converts an `Iterable<Result<T, E>>` to a `<Iterable<E>`.
+  /// All `ok` values are skipped.
+  ///
+  /// ## Basic usage
+  ///
+  /// ```dart
+  /// final list = <Result<int, String>>[
+  ///   ok(4),
+  ///   ok(7),
+  ///   ok(2),
+  ///   err('first'),
+  ///   ok(9),
+  ///   err('second'),
+  /// ];
+  /// final valueList = list.sieveErr();
+  /// expect(valueList, ['first', 'second']);
+  ///
+  /// final list = <Result<int, String>>[ok(1), ok(2), ok(3), ok(4)];
+  /// final valueList = list.sieveErr();
+  /// expect(valueList, <String>[]);
+  ///
+  /// final list = <Result<int, String>>[
+  ///   err('Bad'),
+  ///   err('Really bad'),
+  ///   err('Really really bad'),
+  /// ];
+  /// final valueList = list.sieveErr();
+  /// expect(valueList, ['Bad', 'Really bad', 'Really really bad']);
+  /// ```
+  Iterable<E> sieveErr() {
+    return where((Result<T, E> result) => result.isErr)
+        .map((Result<T, E> result) => result.unwrapErr());
+  }
 }
