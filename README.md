@@ -109,13 +109,13 @@ Result<String, FallibleOpFailure> fallibleOp() {
 
 These methods treat the `Result` as a boolean value, where the `ok` variant is acts like `true` and `err` acts like `false`.
 
-The [`and`](tps://pub.dev/documentation/okay/latest/okay/Result/and.html) ` and `[or](https://pub.dev/documentation/okay/latest/okay/Result/or.html) take another `Result` as input, and produce `Result` as output. The [`and`](https://pub.dev/documentation/okay/latest/okay/Result/and.html) method can produce a `Result<U, E>` value having a different inner type `U` than `Result<T, E>`. The [`or`](https://pub.dev/documentation/okay/latest/okay/Result/or.html) method can produce a `Result<T, F>` value having a different error type `F` than `Result<T, E>`.
+The [`and`](https://pub.dev/documentation/okay/latest/okay/Result/and.html) ` and `[or](https://pub.dev/documentation/okay/latest/okay/Result/or.html) take another `Result` as input, and produce `Result` as output. The [`and`](https://pub.dev/documentation/okay/latest/okay/Result/and.html) method can produce a `Result<U, E>` value having a different inner type `U` than `Result<T, E>`. The [`or`](https://pub.dev/documentation/okay/latest/okay/Result/or.html) method can produce a `Result<T, F>` value having a different error type `F` than `Result<T, E>`.
 
 | method | this | input | output |
 | ------ | ---- | ----- | ------ |
-| [`and`](tps://pub.dev/documentation/okay/latest/okay/Result/and.html) ) | `err(e)` | -- | `err(e)`|
-| [`and`](tps://pub.dev/documentation/okay/latest/okay/Result/and.html) ) | `ok(x)` | `err(d)` | `err(d)` |
-| [`and`](tps://pub.dev/documentation/okay/latest/okay/Result/and.html) ) | `ok(x)` | `ok(y)` | `ok(y)` |
+| [`and`](https://pub.dev/documentation/okay/latest/okay/Result/and.html) ) | `err(e)` | -- | `err(e)`|
+| [`and`](https://pub.dev/documentation/okay/latest/okay/Result/and.html) ) | `ok(x)` | `err(d)` | `err(d)` |
+| [`and`](https://pub.dev/documentation/okay/latest/okay/Result/and.html) ) | `ok(x)` | `ok(y)` | `ok(y)` |
 | [`or`](https://pub.dev/documentation/okay/latest/okay/Result/or.html) | `err(e)` | `err(d)` | `err(d)` |
 | [`or`](https://pub.dev/documentation/okay/latest/okay/Result/or.html) | `err(e)` | `ok(y)` | `ok(y)` |
 | [`or`](https://pub.dev/documentation/okay/latest/okay/Result/or.html) | `ok(x)` | -- | `ok(x)` |

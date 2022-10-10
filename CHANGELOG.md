@@ -1,4 +1,8 @@
 
+# 1.3.2
+
+- Updated readme
+
 # 1.3.1
 
 - Updated readme
