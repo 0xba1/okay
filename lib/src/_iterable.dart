@@ -136,20 +136,20 @@ extension Collect<T, E> on Iterable<Result<T, E>> {
   ///   ok(9),
   ///   err('second'),
   /// ];
-  /// final valueList = list.sieveErr();
-  /// expect(valueList, ['first', 'second']);
+  /// final errorList = list.sieveErr();
+  /// expect(errorList, ['first', 'second']);
   ///
   /// final list = <Result<int, String>>[ok(1), ok(2), ok(3), ok(4)];
-  /// final valueList = list.sieveErr();
-  /// expect(valueList, <String>[]);
+  /// final errorList = list.sieveErr();
+  /// expect(errorList, <String>[]);
   ///
   /// final list = <Result<int, String>>[
   ///   err('Bad'),
   ///   err('Really bad'),
   ///   err('Really really bad'),
   /// ];
-  /// final valueList = list.sieveErr();
-  /// expect(valueList, ['Bad', 'Really bad', 'Really really bad']);
+  /// final errorList = list.sieveErr();
+  /// expect(errorList, ['Bad', 'Really bad', 'Really really bad']);
   /// ```
   Iterable<E> sieveErr() {
     return where((Result<T, E> result) => result.isErr)

@@ -133,8 +133,8 @@ void main() {
         ok(9),
         err('second')
       ];
-      final valueList = list.sieveErr();
-      expect(valueList, ['first', 'second']);
+      final errorList = list.sieveErr();
+      expect(errorList, ['first', 'second']);
     });
 
     test('List with no `err` returns `[]`', () {
@@ -144,8 +144,8 @@ void main() {
         ok(3),
         ok(4),
       ];
-      final valueList = list.sieveErr();
-      expect(valueList, <String>[]);
+      final errorList = list.sieveErr();
+      expect(errorList, <String>[]);
     });
 
     test('List with only `err`', () {
@@ -154,8 +154,8 @@ void main() {
         err('Really bad'),
         err('Really really bad'),
       ];
-      final valueList = list.sieveErr();
-      expect(valueList, [
+      final errorList = list.sieveErr();
+      expect(errorList, [
         'Bad',
         'Really bad',
         'Really really bad',
