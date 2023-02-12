@@ -1,11 +1,10 @@
-// ignore_for_file: lines_longer_than_80_chars, avoid_returning_this
+// ignore_for_file: lines_longer_than_80_chars
 
 import 'package:meta/meta.dart';
 import 'package:okay/src/_exceptions.dart';
 
-part 'result/ok_or_err.dart';
-
-/// `Result` is a type that that represents either success (`ok`) or failure (`err`)
+/// {@template result}
+/// `Result` is a type that that represents either success (`Ok`) or failure (`Err`)
 /// ## Examples
 ///
 /// Basic usage:
@@ -16,9 +15,9 @@ part 'result/ok_or_err.dart';
 ///
 /// Result<FallibleOpSuccess, FallibleOpFailure> fallibleOp() {
 ///   if (true) {
-///     return ok(FallibleOpSuccess());
+///     return Ok(FallibleOpSuccess());
 ///   } else {
-///     return err(FallibleOpFailure());
+///     return Err(FallibleOpFailure());
 ///   }
 /// }
 ///
@@ -31,26 +30,14 @@ part 'result/ok_or_err.dart';
 ///   });
 /// }
 /// ```
+/// {@endtemplate}
 @immutable
-class Result<T, E> {
-  /// Success `Result`
-  const Result.ok(T okValue)
-      : _okValue = okValue,
-        _errValue = null,
-        _type = _ResultType.ok;
+abstract class Result<T, E> {
+  // ignore: public_member_api_docs
+  const Result();
 
-  /// Failure `Result`
-  const Result.err(E errValue)
-      : _okValue = null,
-        _errValue = errValue,
-        _type = _ResultType.err;
-
-  final T? _okValue;
-  final E? _errValue;
-  final _ResultType _type;
-
-  T get _ok => _okValue as T;
-  E get _err => _errValue as E;
+  // factory Ok(T value) => Ok(value);
+  // factory Err(E error) => Err(error);
 
   //------------------------------------------------------------------------
   // Methods
@@ -66,13 +53,13 @@ class Result<T, E> {
   /// Basic usage:
   ///
   /// ```dart
-  /// Result<int, String> x = ok(2);
+  /// Result<int, String> x = Ok(2);
   /// expect(x.ok, 2);
   ///
-  /// Result<int, String> x = err('An error occured');
+  /// Result<int, String> x = Err('An error occured');
   /// expect(x.ok, null);
   /// ```
-  T? get ok => _okValue;
+  T? get ok;
 
   /// Converts from `Result<T, E>` to `E?`.
   ///
@@ -81,13 +68,13 @@ class Result<T, E> {
   /// Basic usage:
   ///
   /// ```dart
-  /// Result<int, String> x = ok(2);
+  /// Result<int, String> x = Ok(2);
   /// expect(x.err, null);
   ///
-  /// Result<int, String> x = err('An error occured');
+  /// Result<int, String> x = Err('An error occured');
   /// expect(x.err, 'An error occured');
   /// ```
-  E? get err => _errValue;
+  E? get err;
   //-----------------------------------
 
   //-----------------------------------
@@ -102,30 +89,23 @@ class Result<T, E> {
   /// Basic usage:
   ///
   /// ```dart
-  /// Result<int, String> x = ok(2);
-  /// Result<String, String> y = err('late error');
-  /// expect(x.and(y), err<String, String>('late error'));
+  /// Result<int, String> x = Ok(2);
+  /// Result<String, String> y = Err('late error');
+  /// expect(x.and(y), ErrString, String>('late error'));
   ///
-  /// Result<int, String> x = err('early error');
-  /// Result<String, String> y = ok('foo');
-  /// expect(x.and(y), err<String, String>('early error'));
+  /// Result<int, String> x = Err('early error');
+  /// Result<String, String> y = Ok('foo');
+  /// expect(x.and(y), ErrString, String>('early error'));
   ///
-  /// Result<int, String> x = err('not a 2');
-  /// Result<String, String> y = err('late error');
-  /// expect(x.and(y), err<String, String>('not a too'));
+  /// Result<int, String> x = Err('not a 2');
+  /// Result<String, String> y = Err('late error');
+  /// expect(x.and(y), ErrString, String>('not a too'));
   ///
-  /// Result<int, String> x = ok(2);
-  /// Result<String, String> y = ok('different result type');
-  /// expect(x.and(y), ok<String, String>('different result type'));
+  /// Result<int, String> x = Ok(2);
+  /// Result<String, String> y = Ok('different result type');
+  /// expect(x.and(y), Ok<String, String>('different result type'));
   /// ```
-  Result<U, E> and<U>(Result<U, E> res) {
-    switch (_type) {
-      case _ResultType.ok:
-        return res;
-      case _ResultType.err:
-        return Result.err(_err);
-    }
-  }
+  Result<U, E> and<U>(Result<U, E> res);
 
   /// Calls `op` if the result is `ok`,
   /// otherwise returns the `err` value of `this`.
@@ -139,24 +119,17 @@ class Result<T, E> {
   /// ```dart
   /// Result<int, String> parseToInt(String value) {
   ///   try {
-  ///     return ok(int.parse(value));
+  ///     return Ok(int.parse(value));
   ///   } catch (_) {
-  ///     return err(value);
+  ///     return Err(value);
   ///   }
   /// }
   ///
-  /// Result<String, String> x = ok('4');
+  /// Result<String, String> x = Ok('4');
   /// Result<int, String> y = x.andThen(parseToInt);
-  /// expect(y, ok(4));
+  /// expect(y, Ok(4));
   /// ```
-  Result<U, E> andThen<U>(Result<U, E> Function(T value) okMap) {
-    switch (_type) {
-      case _ResultType.ok:
-        return okMap(_ok);
-      case _ResultType.err:
-        return Result.err(_err);
-    }
-  }
+  Result<U, E> andThen<U>(Result<U, E> Function(T value) okMap);
 
   /// Returns `res` if the result is `err`,
   /// otherwise returns the `ok` (success) value of `this`.
@@ -166,30 +139,23 @@ class Result<T, E> {
   /// Basic usage:
   ///
   /// ```dart
-  /// Result<int, String> x = ok(2);
-  /// Result<int, String> y = err('late error');
-  /// expect(x.or(y), ok<int, String>(2));
+  /// Result<int, String> x = Ok(2);
+  /// Result<int, String> y = Err('late error');
+  /// expect(x.or(y), Ok<int, String>(2));
   ///
-  /// Result<int, String> x = err('early error');
-  /// Result<int, String> y = ok(2);
-  /// expect(x.or(y), ok<int, String>(2));
+  /// Result<int, String> x = Err('early error');
+  /// Result<int, String> y = Ok(2);
+  /// expect(x.or(y), Ok<int, String>(2));
   ///
-  /// Result<int, String> x = err('not a 2');
-  /// Result<int, String> y = err<int, String>('late error');
-  /// expect(x.or(y), err<int, String>('late error'));
+  /// Result<int, String> x = Err('not a 2');
+  /// Result<int, String> y = Errint, String>('late error');
+  /// expect(x.or(y), Errint, String>('late error'));
   ///
-  /// Result<int, String> x = ok(2);
-  /// Result<int, String> y = ok(100);
-  /// expect(x.or(y), ok<int, String>(2));
+  /// Result<int, String> x = Ok(2);
+  /// Result<int, String> y = Ok(100);
+  /// expect(x.or(y), Ok<int, String>(2));
   /// ```
-  Result<T, F> or<F>(Result<T, F> res) {
-    switch (_type) {
-      case _ResultType.ok:
-        return Result.ok(_ok);
-      case _ResultType.err:
-        return res;
-    }
-  }
+  Result<T, F> or<F>(Result<T, F> res);
 
   /// Calls `op` if the result is `err`,
   /// otherwise returns the `ok` value of `this`.
@@ -201,25 +167,18 @@ class Result<T, E> {
   /// Basic usage:
   ///
   /// ```dart
-  /// Result<int, int> sq(int x) => ok(x * x);
-  /// Result<int, int> error(int x) => err(x);
+  /// Result<int, int> sq(int x) => Ok(x * x);
+  /// Result<int, int> error(int x) => Err(x);
   ///
-  /// expect(ok<int, int>(2).orElse(sq).orElse(sq), ok<int, int>(2));
+  /// expect(Ok<int, int>(2).orElse(sq).orElse(sq), Ok<int, int>(2));
   ///
-  /// expect(ok<int, int>(2).orElse(error).orElse(sq), ok<int, int>(2));
+  /// expect(Ok<int, int>(2).orElse(error).orElse(sq), Ok<int, int>(2));
   ///
-  /// expect(err<int, int>(3).orElse(sq).orElse(error), ok<int, int>(9));
+  /// expect(Errint, int>(3).orElse(sq).orElse(error), Ok<int, int>(9));
   ///
-  /// expect(err<int, int>(3).orElse(error).orElse(error), err<int, int>(3));
+  /// expect(Errint, int>(3).orElse(error).orElse(error), Errint, int>(3));
   /// ```
-  Result<T, F> orElse<F>(Result<T, F> Function(E error) errMap) {
-    switch (_type) {
-      case _ResultType.ok:
-        return Result.ok(_ok);
-      case _ResultType.err:
-        return errMap(_err);
-    }
-  }
+  Result<T, F> orElse<F>(Result<T, F> Function(E error) errMap);
 
   // -------------------------------
 
@@ -234,23 +193,16 @@ class Result<T, E> {
   ///
   /// Basic usage:
   /// ```dart
-  /// Result<int, String> x = ok(2);
+  /// Result<int, String> x = Ok(2);
   /// expect(x.contains(2), true);
   ///
-  /// Result<int, String> x = ok(3);
+  /// Result<int, String> x = Ok(3);
   /// expect(x.contains(2), false);
   ///
-  /// Result<int, String> x = err('Some error message');
+  /// Result<int, String> x = Err('Some error message');
   /// expect(x.contains(2), false);
   /// ```
-  bool contains(Object? x) {
-    switch (_type) {
-      case _ResultType.ok:
-        return _ok == x;
-      case _ResultType.err:
-        return false;
-    }
-  }
+  bool contains(Object? x);
 
   /// Returns `true` if the result is an `err` (failure) value
   /// containing the given value.
@@ -259,23 +211,16 @@ class Result<T, E> {
   ///
   /// Basic usage:
   /// ```dart
-  /// Result<int, String> x = ok(2);
+  /// Result<int, String> x = Ok(2);
   /// expect(x.containsErr('Some error message'), false);
   ///
-  /// Result<int, String> x = err('Some error message');
+  /// Result<int, String> x = Err('Some error message');
   /// expect(x.contains('Some error message'), true);
   ///
-  /// Result<int, String> x = err('Some other error message');
+  /// Result<int, String> x = Err('Some other error message');
   /// expect(x.contains('Some error message'), false);
   /// ```
-  bool containsErr(Object? x) {
-    switch (_type) {
-      case _ResultType.err:
-        return _err == x;
-      case _ResultType.ok:
-        return false;
-    }
-  }
+  bool containsErr(Object? x);
 
   // --------------------------------
 
@@ -295,23 +240,13 @@ class Result<T, E> {
   ///
   /// Basic usage:
   /// ```dart
-  /// Result<int, String> x = err("emergency failure");
+  /// Result<int, String> x = Err("emergency failure");
   /// x.expect("Testing expect"); // Throws an exception with message `Testing expect: emergency failure`
   ///
-  /// Result<int, String> y = ok(5);
+  /// Result<int, String> y = Ok(5);
   /// print(y.expect("Should print `5`")); // 5
   /// ```
-  T expect(String message) {
-    switch (_type) {
-      case _ResultType.ok:
-        return _ok;
-      case _ResultType.err:
-        throw ExpectException(
-          errorMessage: message,
-          errString: _errValue.toString(),
-        );
-    }
-  }
+  T expect(String message);
 
   /// Returns the contained `ok` (success) value.
   /// Because this function may throw an exception, its use is generally discouraged.
@@ -329,22 +264,13 @@ class Result<T, E> {
   /// Basic Usage:
   ///
   /// ```dart
-  /// Result<int, String> x = ok(69);
+  /// Result<int, String> x = Ok(69);
   /// expect(x.unwrap(), 69);
   ///
-  /// Result<int, String> y = err('emergency failure');
+  /// Result<int, String> y = Err('emergency failure');
   /// expect(y.unwrap(), "emergency failure"); // Throws an exception with message `called `Result.unwrapErr()` on an `err` value: 'emergency failure'`
   /// ```
-  T unwrap() {
-    switch (_type) {
-      case _ResultType.ok:
-        return _ok;
-      case _ResultType.err:
-        throw UnwrapException(
-          errString: _errValue.toString(),
-        );
-    }
-  }
+  T unwrap();
 
   /// Returns the contained `err` (failure) value.
   ///
@@ -357,20 +283,10 @@ class Result<T, E> {
   /// ## Examples
   ///
   /// ```dart
-  ///Result<int, String> x = ok(9);
+  ///Result<int, String> x = Ok(9);
   ///x.expectErr("Testing expectErr"); // throws an exception with `Testing expectErr: 9`
   /// ```
-  E expectErr(String message) {
-    switch (_type) {
-      case _ResultType.err:
-        return _err;
-      case _ResultType.ok:
-        throw ExpectErrException(
-          errorMessage: message,
-          okString: _okValue.toString(),
-        );
-    }
-  }
+  E expectErr(String message);
 
   /// Returns the contained `err` (failure) value.
   ///
@@ -382,22 +298,13 @@ class Result<T, E> {
   /// ## Examples
   ///
   /// ```dart
-  /// Result<int, String> x = ok(2);
+  /// Result<int, String> x = Ok(2);
   /// x.unwrapErr(); // Throws an exception with message `called `Result.unwrapErr()` on an `ok` value: 2`
   ///
-  /// Result<int, String> y = err('emergency failure');
+  /// Result<int, String> y = Err('emergency failure');
   /// expect(y.unwrapErr(), "emergency failure");
   /// ```
-  E unwrapErr() {
-    switch (_type) {
-      case _ResultType.err:
-        return _err;
-      case _ResultType.ok:
-        throw UnwrapErrException(
-          okString: _okValue.toString(),
-        );
-    }
-  }
+  E unwrapErr();
 
   /// Returns the contained `ok` (success) value or a provided fallback.
   ///
@@ -408,20 +315,13 @@ class Result<T, E> {
   /// ```dart
   /// final fallback = 23;
   ///
-  /// Result<int, String> x = ok(9);
+  /// Result<int, String> x = Ok(9);
   /// expect(x.unwrapOr(fallback), 9);
   ///
-  /// Result<int, String> y = err('Error!');
+  /// Result<int, String> y = Err('Error!');
   /// expect(y.unwrapOr(fallback), fallback);
   /// ```
-  T unwrapOr(T fallback) {
-    switch (_type) {
-      case _ResultType.ok:
-        return _ok;
-      case _ResultType.err:
-        return fallback;
-    }
-  }
+  T unwrapOr(T fallback);
 
   /// Returns the contained `ok` (success) value
   /// or computes it from the closure.
@@ -433,17 +333,10 @@ class Result<T, E> {
   /// ```dart
   /// int count(String x) => x.length;
   ///
-  /// expect(ok<int, String>(2).unwrapOrElse(count), 2);
-  /// expect(err<int, String>('foo').unwrapOrElse(count), 3);
+  /// expect(Ok<int, String>(2).unwrapOrElse(count), 2);
+  /// expect(Errint, String>('foo').unwrapOrElse(count), 3);
   /// ```
-  T unwrapOrElse(T Function(E error) fallback) {
-    switch (_type) {
-      case _ResultType.ok:
-        return _ok;
-      case _ResultType.err:
-        return fallback(_err);
-    }
-  }
+  T unwrapOrElse(T Function(E error) fallback);
 
   // --------------------------------
 
@@ -458,9 +351,9 @@ class Result<T, E> {
   /// ```dart
   /// Result<int, String> parseToInt(String value) {
   ///   try {
-  ///     return ok(int.parse(value));
+  ///     return Ok(int.parse(value));
   ///   } catch (_) {
-  ///     return err(value);
+  ///     return Err(value);
   ///   }
   /// }
   ///
@@ -468,12 +361,7 @@ class Result<T, E> {
   ///   .inspect((val) => print('original: $val')) // prints 'original: 4'
   ///   .map((val) => val * val);
   /// ```
-  Result<T, E> inspect(void Function(T value) f) {
-    if (_type == _ResultType.ok) {
-      f(_ok);
-    }
-    return this;
-  }
+  Result<T, E> inspect(void Function(T value) f);
 
   /// Calls the provided closure with the contained error (if `err`).
   ///
@@ -482,20 +370,15 @@ class Result<T, E> {
   /// ```dart
   /// Result<int, String> parseToInt(String value) {
   ///   try {
-  ///     return ok(int.parse(value));
+  ///     return Ok(int.parse(value));
   ///   } catch (_) {
-  ///     return err(value);
+  ///     return Err(value);
   ///   }
   /// }
   /// Result<int, String> x = parseToInt('four')
   ///   .inspectErr((val) => print("'$val' could not be parsed into an integer")) // prints "'$four' could not be parsed into an integer"
   /// ```
-  Result<T, E> inspectErr(void Function(E error) f) {
-    if (_type == _ResultType.err) {
-      f(_err);
-    }
-    return this;
-  }
+  Result<T, E> inspectErr(void Function(E error) f);
 
   // --------------------------------
 
@@ -510,34 +393,28 @@ class Result<T, E> {
   /// Basic usage:
   ///
   /// ```dart
-  /// Result<int, String> x = ok(9);
+  /// Result<int, String> x = Ok(9);
   /// expect(x.isOk, true);
   ///
-  /// Result<int, String> y = err('An unexpected error occured');
+  /// Result<int, String> y = Err('An unexpected error occured');
   /// expect(x.isOk, false);
   /// ```
-  bool get isOk => _type == _ResultType.ok;
+  bool get isOk;
 
   /// Returns `true` if the result is `ok` and the value matches the predicate `f`
   ///
   /// ## Examples
   ///
   /// ```dart
-  /// Result<int, String> x = ok(9);
+  /// Result<int, String> x = Ok(9);
   /// expect(x.isOkAnd((int val) => val > 5), true);
   ///
   /// expect(x.isOkAnd((int val) => val < 5), false);
   ///
-  /// Result<int, String> y = err('An unexpected error occured');
+  /// Result<int, String> y = Err('An unexpected error occured');
   /// expect(x.isOkAnd((_) => true), false);
   /// ```
-  bool isOkAnd(bool Function(T value) f) {
-    if (_type == _ResultType.ok) {
-      return f(_ok);
-    }
-
-    return false;
-  }
+  bool isOkAnd(bool Function(T value) f);
 
   /// Resturns `true` if the result is `err` (failure)
   ///
@@ -546,33 +423,27 @@ class Result<T, E> {
   /// Basic usage:
   ///
   /// ```dart
-  /// Result<int, String> y = err('An unexpected error occured');
+  /// Result<int, String> y = Err('An unexpected error occured');
   /// expect(x.isErr, true);
   ///
-  /// Result<int, String> x = ok(0);
+  /// Result<int, String> x = Ok(0);
   /// expect(x.isErr, false);
   /// ```
-  bool get isErr => _type == _ResultType.err;
+  bool get isErr;
 
   /// Returns `true` if the result is `err` and the value matches the predicate `f`
   ///
   /// ## Examples
   ///
   /// ```dart
-  /// Result<int, String> y = err('An unexpected error occured');
+  /// Result<int, String> y = Err('An unexpected error occured');
   /// expect(x.isErrAnd((String value) => value.isNotEmpty), true);
   /// expect(x.isErrAnd((String value) => value.isEmpty), false);
   ///
-  /// Result<int, String> x = ok(0);
+  /// Result<int, String> x = Ok(0);
   /// expect(x.isErrAnd((_) => true), false);
   /// ```
-  bool isErrAnd(bool Function(E error) f) {
-    if (_type == _ResultType.err) {
-      return f(_err);
-    }
-
-    return false;
-  }
+  bool isErrAnd(bool Function(E error) f);
 
   // --------------------------------
 
@@ -590,7 +461,7 @@ class Result<T, E> {
   /// Basic usage:
   ///
   /// ```dart
-  /// Result<int, int> x = ok(9);
+  /// Result<int, int> x = Ok(9);
   /// expect(
   ///   x.when(
   ///     err: (error) => 'Failure: $error',
@@ -599,7 +470,7 @@ class Result<T, E> {
   ///   'Success: 9',
   /// );
   ///
-  /// Result<int, int> x = err(81);
+  /// Result<int, int> x = Err(81);
   /// expect(
   ///   x.when(
   ///     err: (error) => 'Failure: $error',
@@ -611,9 +482,7 @@ class Result<T, E> {
   U when<U>({
     required U Function(T value) ok,
     required U Function(E error) err,
-  }) {
-    return mapOrElse(errMap: err, okMap: ok);
-  }
+  });
 
   /// Maps a `Result<T, E>` to `Result<U, E>` by applying a function to a
   /// contained `ok` (success) value, and leaving an `err` (failure) value
@@ -626,9 +495,9 @@ class Result<T, E> {
   /// ```dart
   /// Result<int, String> parseToInt(String value) {
   ///   try {
-  ///     return ok(int.parse(value));
+  ///     return Ok(int.parse(value));
   ///   } catch (_) {
-  ///     return err(value);
+  ///     return Err(value);
   ///   }
   /// }
   ///
@@ -636,18 +505,11 @@ class Result<T, E> {
   ///   return parseToInt(value).map((int val) => val > 5);
   /// }
   ///
-  /// expect(isStringGreaterThanFive("7"), ok<bool, String>(true));
-  /// expect(isStringGreaterThanFive("4"), ok<bool, String>(false));
-  /// expect(isStringGreaterThanFive("five"), err<bool, String>("five"));
+  /// expect(isStringGreaterThanFive("7"), Ok<bool, String>(true));
+  /// expect(isStringGreaterThanFive("4"), Ok<bool, String>(false));
+  /// expect(isStringGreaterThanFive("five"), Errbool, String>("five"));
   /// ```
-  Result<U, E> map<U>(U Function(T value) okMap) {
-    switch (_type) {
-      case _ResultType.ok:
-        return Result.ok(okMap(_ok));
-      case _ResultType.err:
-        return Result.err(_err);
-    }
-  }
+  Result<U, E> map<U>(U Function(T value) okMap);
 
   /// Returns the provided fallback (if `err` (failure)), or
   /// applies a function to the contained value (if `ok` (success)).
@@ -655,20 +517,13 @@ class Result<T, E> {
   /// ## Examples
   ///
   /// ```dart
-  /// Result<String, String> x = ok("foo");
+  /// Result<String, String> x = Ok("foo");
   /// expect(x.mapOr(fallback: 42, okMap: (val) => val.length)), 3);
   ///
-  /// Result<String, String> x = err("foo");
+  /// Result<String, String> x = Err("foo");
   /// expect(x.mapOr(fallback: 42, okMap: (val) => val.length), 42);
   /// ```
-  U mapOr<U>({required U fallback, required U Function(T value) okMap}) {
-    switch (_type) {
-      case _ResultType.ok:
-        return okMap(_ok);
-      case _ResultType.err:
-        return fallback;
-    }
-  }
+  U mapOr<U>({required U fallback, required U Function(T value) okMap});
 
   /// Maps a `Result<T, E>` to `U` by applying fallback function `fallback` to
   /// a contained `err` (failure) value, or function `op` to a
@@ -682,7 +537,7 @@ class Result<T, E> {
   /// Basic usage:
   ///
   /// ```dart
-  /// Result<int, int> x = ok(9);
+  /// Result<int, int> x = Ok(9);
   /// expect(
   ///   x.mapOrElse(
   ///     errMap: (error) => 'Failure: $error',
@@ -691,7 +546,7 @@ class Result<T, E> {
   ///   'Success: 9',
   /// );
   ///
-  /// Result<int, int> x = err(81);
+  /// Result<int, int> x = Err(81);
   /// expect(
   ///   x.mapOrElse(
   ///     errMap: (error) => 'Failure: $error',
@@ -703,14 +558,7 @@ class Result<T, E> {
   U mapOrElse<U>({
     required U Function(E error) errMap,
     required U Function(T value) okMap,
-  }) {
-    switch (_type) {
-      case _ResultType.ok:
-        return okMap(_ok);
-      case _ResultType.err:
-        return errMap(_err);
-    }
-  }
+  });
 
   /// Maps a `Result<T, E>` to `Result<T, F>` by applying a function to a
   /// contained `err` (failure) value,
@@ -726,56 +574,395 @@ class Result<T, E> {
   /// ```dart
   /// String stringify(int x) => 'error code: $x';
   ///
-  /// Result<int, int> x = ok(2);
-  /// expect(x.mapErr(stringify), ok<int, String>(2));
+  /// Result<int, int> x = Ok(2);
+  /// expect(x.mapErr(stringify), Ok<int, String>(2));
   ///
-  /// Result<int, int> y = err(13);
-  /// expect(y.mapErr(stringify), err<int, String>('error code: 13'));
+  /// Result<int, int> y = Err(13);
+  /// expect(y.mapErr(stringify), Errint, String>('error code: 13'));
   /// ```
+  Result<T, F> mapErr<F>(F Function(E error) errMap);
+}
+
+/// {@macro result}
+class Ok<T, E> extends Result<T, E> {
+  /// {@macro result}
+  const Ok(this._value);
+  final T _value;
+
+  //------------------------------------------------------------------------
+  // Methods
+
+  //---------------------------------------
+  // Adapters
+  // Adapter for each variant
+
+  @override
+  T? get ok => _value;
+
+  @override
+  E? get err => null;
+  //-----------------------------------
+
+  //-----------------------------------
+  // Boolean
+  // Boolean operations on the contained values
+  @override
+  Result<U, E> and<U>(Result<U, E> res) {
+    return res;
+  }
+
+  @override
+  Result<U, E> andThen<U>(Result<U, E> Function(T value) okMap) {
+    return okMap(_value);
+  }
+
+  @override
+  Result<T, F> or<F>(Result<T, F> res) {
+    return Ok(_value);
+  }
+
+  @override
+  Result<T, F> orElse<F>(Result<T, F> Function(E error) errMap) {
+    return Ok(_value);
+  }
+
+  // -------------------------------
+
+  // -------------------------------
+  // Contains
+  // Compares contained `ok` or `err` value
+
+  @override
+  bool contains(Object? x) {
+    return _value == x;
+  }
+
+  @override
+  bool containsErr(Object? x) {
+    return false;
+  }
+
+  // --------------------------------
+
+  // --------------------------------
+  // Extractors
+  // Extract value or error
+
+  @override
+  T expect(String message) {
+    return _value;
+  }
+
+  @override
+  T unwrap() {
+    return _value;
+  }
+
+  @override
+  E expectErr(String message) {
+    throw ExpectErrException(
+      errorMessage: message,
+      okString: _value.toString(),
+    );
+  }
+
+  @override
+  E unwrapErr() {
+    throw UnwrapErrException(
+      okString: _value.toString(),
+    );
+  }
+
+  @override
+  T unwrapOr(T fallback) {
+    return _value;
+  }
+
+  @override
+  T unwrapOrElse(T Function(E error) fallback) {
+    return _value;
+  }
+
+  // --------------------------------
+
+  // --------------------------------
+  // Inspect
+  // Run closures on contained value or error
+
+  @override
+  Result<T, E> inspect(void Function(T value) f) {
+    f(_value);
+
+    return this;
+  }
+
+  @override
+  Result<T, E> inspectErr(void Function(E error) f) {
+    return this;
+  }
+
+  // --------------------------------
+
+  // --------------------------------
+  // QueryingValues
+  // Querying the contained values
+
+  @override
+  bool get isOk => true;
+
+  @override
+  bool isOkAnd(bool Function(T value) f) {
+    return f(_value);
+  }
+
+  @override
+  bool get isErr => false;
+
+  @override
+  bool isErrAnd(bool Function(E error) f) {
+    return false;
+  }
+
+  // --------------------------------
+
+  // --------------------------------
+  // Transformers
+  // Transforming contained values
+
+  @override
+  U when<U>({
+    required U Function(T value) ok,
+    required U Function(E error) err,
+  }) {
+    return mapOrElse(errMap: err, okMap: ok);
+  }
+
+  @override
+  Result<U, E> map<U>(U Function(T value) okMap) {
+    return Ok(okMap(_value));
+  }
+
+  @override
+  U mapOr<U>({required U fallback, required U Function(T value) okMap}) {
+    return okMap(_value);
+  }
+
+  @override
+  U mapOrElse<U>({
+    required U Function(E error) errMap,
+    required U Function(T value) okMap,
+  }) {
+    return okMap(_value);
+  }
+
+  @override
   Result<T, F> mapErr<F>(F Function(E error) errMap) {
-    switch (_type) {
-      case _ResultType.err:
-        return Result.err(errMap(_err));
-      case _ResultType.ok:
-        return Result.ok(_ok);
-    }
+    return Ok(_value);
   }
 
   // --------------------------------
 
   @override
   bool operator ==(Object? other) =>
-      other is Result<T, E> &&
-      other._type == _type &&
-      other._okValue == _okValue &&
-      other._errValue == _errValue;
+      other is Ok<T, E> && other._value == _value;
 
   @override
   int get hashCode {
-    switch (_type) {
-      case _ResultType.ok:
-        return Object.hash(_type, _okValue);
-      case _ResultType.err:
-        return Object.hash(_type, _errValue);
-    }
+    return Object.hash('Err', _value);
   }
 
   @override
   String toString() {
-    switch (_type) {
-      case _ResultType.ok:
-        return 'ok( $_okValue )';
-      case _ResultType.err:
-        return 'err( $_errValue )';
-    }
+    return 'Ok( $_value )';
   }
 }
 
-/// Indicating `Result` of type `ok` or `err`
-enum _ResultType {
-  /// Success `Result`
-  ok,
+/// {@macro result}
+class Err<T, E> extends Result<T, E> {
+  /// {@macro result}
+  const Err(this._error);
+  final E _error;
 
-  /// Failure `Result`
-  err,
+  //------------------------------------------------------------------------
+  // Methods
+
+  //---------------------------------------
+  // Adapters
+  // Adapter for each variant
+
+  @override
+  T? get ok => null;
+
+  @override
+  E? get err => _error;
+  //-----------------------------------
+
+  //-----------------------------------
+  // Boolean
+  // Boolean operations on the contained values
+  @override
+  Result<U, E> and<U>(Result<U, E> res) {
+    return Err(_error);
+  }
+
+  @override
+  Result<U, E> andThen<U>(Result<U, E> Function(T value) okMap) {
+    return Err(_error);
+  }
+
+  @override
+  Result<T, F> or<F>(Result<T, F> res) {
+    return res;
+  }
+
+  @override
+  Result<T, F> orElse<F>(Result<T, F> Function(E error) errMap) {
+    return errMap(_error);
+  }
+
+  // -------------------------------
+
+  // -------------------------------
+  // Contains
+  // Compares contained `ok` or `err` value
+
+  @override
+  bool contains(Object? x) => false;
+
+  @override
+  bool containsErr(Object? x) => x == _error;
+
+  // --------------------------------
+
+  // --------------------------------
+  // Extractors
+  // Extract value or error
+
+  @override
+  T expect(String message) {
+    throw ExpectException(
+      errorMessage: message,
+      errString: _error.toString(),
+    );
+  }
+
+  @override
+  T unwrap() {
+    throw UnwrapException(
+      errString: _error.toString(),
+    );
+  }
+
+  @override
+  E expectErr(String message) {
+    return _error;
+  }
+
+  @override
+  E unwrapErr() {
+    return _error;
+  }
+
+  @override
+  T unwrapOr(T fallback) {
+    return fallback;
+  }
+
+  @override
+  T unwrapOrElse(T Function(E error) fallback) {
+    return fallback(_error);
+  }
+
+  // --------------------------------
+
+  // --------------------------------
+  // Inspect
+  // Run closures on contained value or error
+
+  @override
+  Result<T, E> inspect(void Function(T value) f) {
+    return this;
+  }
+
+  @override
+  Result<T, E> inspectErr(void Function(E error) f) {
+    f(_error);
+
+    return this;
+  }
+
+  // --------------------------------
+
+  // --------------------------------
+  // QueryingValues
+  // Querying the contained values
+
+  @override
+  bool get isOk => false;
+
+  @override
+  bool isOkAnd(bool Function(T value) f) {
+    return false;
+  }
+
+  @override
+  bool get isErr => true;
+
+  @override
+  bool isErrAnd(bool Function(E error) f) {
+    return f(_error);
+  }
+
+  // --------------------------------
+
+  // --------------------------------
+  // Transformers
+  // Transforming contained values
+
+  @override
+  U when<U>({
+    required U Function(T value) ok,
+    required U Function(E error) err,
+  }) {
+    return mapOrElse(errMap: err, okMap: ok);
+  }
+
+  @override
+  Result<U, E> map<U>(U Function(T value) okMap) {
+    return Err(_error);
+  }
+
+  @override
+  U mapOr<U>({required U fallback, required U Function(T value) okMap}) {
+    return fallback;
+  }
+
+  @override
+  U mapOrElse<U>({
+    required U Function(E error) errMap,
+    required U Function(T value) okMap,
+  }) {
+    return errMap(_error);
+  }
+
+  @override
+  Result<T, F> mapErr<F>(F Function(E error) errMap) {
+    return Err(errMap(_error));
+  }
+
+  // --------------------------------
+
+  @override
+  bool operator ==(Object? other) =>
+      other is Err<T, E> && other._error == _error;
+
+  @override
+  int get hashCode {
+    return Object.hash('Err', _error);
+  }
+
+  @override
+  String toString() {
+    return 'Err( $_error )';
+  }
 }
