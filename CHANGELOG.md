@@ -1,3 +1,10 @@
+# 2.0.0-dev1
+
+### Breaking Changes
+
+- Removed `ok()`, `err()`, `Result.ok()`, `Result.err()`
+- Constructors now `Ok()` and `Err()`
+- Removed `ok_or_err()` method on `Result`
 
 # 1.3.2
 
