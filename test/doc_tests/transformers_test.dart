@@ -4,15 +4,15 @@ import 'package:test/test.dart';
 void main() {
   Result<int, String> parseToInt(String value) {
     try {
-      return ok(int.parse(value));
+      return Ok(int.parse(value));
     } catch (_) {
-      return err(value);
+      return Err(value);
     }
   }
 
   group('Result.when()', () {
     test('on `ok`', () {
-      final x = ok<int, int>(9);
+      const x = Ok<int, int>(9);
 
       expect(
         x.when(
@@ -24,7 +24,7 @@ void main() {
     });
 
     test('on `err`', () {
-      final x = err<int, int>(81);
+      const x = Err<int, int>(81);
 
       expect(
         x.when(
@@ -42,25 +42,25 @@ void main() {
     }
 
     test('on `ok`', () {
-      expect(isStringGreaterThanFive('7'), ok<bool, String>(true));
+      expect(isStringGreaterThanFive('7'), const Ok<bool, String>(true));
 
-      expect(isStringGreaterThanFive('4'), ok<bool, String>(false));
+      expect(isStringGreaterThanFive('4'), const Ok<bool, String>(false));
     });
 
     test('on `err`', () {
-      expect(isStringGreaterThanFive('five'), err<bool, String>('five'));
+      expect(isStringGreaterThanFive('five'), const Err<bool, String>('five'));
     });
   });
 
   group('Result.mapOr()', () {
     test('on `ok`', () {
-      final x = ok<String, String>('foo');
+      const x = Ok<String, String>('foo');
 
       expect(x.mapOr(fallback: 42, okMap: (val) => val.length), 3);
     });
 
     test('on `err`', () {
-      final x = err<String, String>('foo');
+      const x = Err<String, String>('foo');
 
       expect(x.mapOr(fallback: 42, okMap: (val) => val.length), 42);
     });
@@ -68,7 +68,7 @@ void main() {
 
   group('Result.mapOrElse()', () {
     test('on `ok`', () {
-      final x = ok<int, int>(9);
+      const x = Ok<int, int>(9);
 
       expect(
         x.mapOrElse(
@@ -80,7 +80,7 @@ void main() {
     });
 
     test('on `err`', () {
-      final x = err<int, int>(81);
+      const x = Err<int, int>(81);
 
       expect(
         x.mapOrElse(

@@ -13,10 +13,10 @@ void main() {
     Result<String, FallibleOpFailure> fallibleOp() {
       // ignore: literal_only_boolean_expressions
       if (true) {
-        return ok('Very good string');
+        return const Ok('Very good string');
         // ignore: dead_code
       } else {
-        return err(FallibleOpFailure());
+        return Err(FallibleOpFailure());
       }
     }
 

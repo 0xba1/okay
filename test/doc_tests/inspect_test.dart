@@ -4,9 +4,9 @@ import 'package:test/test.dart';
 void main() {
   Result<int, String> parseToInt(String value) {
     try {
-      return ok(int.parse(value));
+      return Ok(int.parse(value));
     } catch (_) {
-      return err(value);
+      return Err(value);
     }
   }
 

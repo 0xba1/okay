@@ -1,34 +1,34 @@
 import 'package:okay/okay.dart';
 import 'package:test/test.dart';
 
-/// final list = [ok(4), ok(7), ok(2), err('first'), ok(9), err('second')];
+/// final list = [Ok(4), Ok(7), Ok(2), Err('first'), Ok(9), Err('second')];
 /// final resultList = list.collect();
-/// expect(resultList, err('first'));
+/// expect(resultList, Err('first'));
 ///
-/// final list = [ok(1), ok(2), ok(3), ok(4)];
+/// final list = [Ok(1), Ok(2), Ok(3), Ok(4)];
 /// final resultList = list.collect();
-/// expect(resultList, ok([1, 2, 3, 4]));
+/// expect(resultList, Ok([1, 2, 3, 4]));
 void main() {
   group('Iterable.collect', () {
     test('List with an `err` returns `err`', () {
       final list = <Result<int, String>>[
-        ok(4),
-        ok(7),
-        ok(2),
-        err('first'),
-        ok(9),
-        err('second')
+        const Ok(4),
+        const Ok(7),
+        const Ok(2),
+        const Err('first'),
+        const Ok(9),
+        const Err('second')
       ];
       final resultList = list.collect();
-      expect(resultList, err<Iterable<int>, String>('first'));
+      expect(resultList, const Err<Iterable<int>, String>('first'));
     });
 
     test('List with no `err` returns `ok`', () {
       final list = <Result<int, String>>[
-        ok(1),
-        ok(2),
-        ok(3),
-        ok(4),
+        const Ok(1),
+        const Ok(2),
+        const Ok(3),
+        const Ok(4),
       ];
       final resultList = list.collect();
       expect(resultList.unwrap(), [1, 2, 3, 4]);
@@ -38,12 +38,12 @@ void main() {
   group('Iterable.collectOr', () {
     test('List with an `err`', () {
       final list = <Result<int, String>>[
-        ok(4),
-        ok(7),
-        ok(2),
-        err('first'),
-        ok(9),
-        err('second')
+        const Ok(4),
+        const Ok(7),
+        const Ok(2),
+        const Err('first'),
+        const Ok(9),
+        const Err('second')
       ];
       final valueList = list.collectOr(0);
       expect(valueList, [4, 7, 2, 0, 9, 0]);
@@ -51,10 +51,10 @@ void main() {
 
     test('List with no `err` returns `ok`', () {
       final list = <Result<int, String>>[
-        ok(1),
-        ok(2),
-        ok(3),
-        ok(4),
+        const Ok(1),
+        const Ok(2),
+        const Ok(3),
+        const Ok(4),
       ];
       final valueList = list.collectOr(1);
       expect(valueList, [1, 2, 3, 4]);
@@ -64,12 +64,12 @@ void main() {
   group('Iterable.collectOrElse', () {
     test('List with an `err`', () {
       final list = <Result<int, String>>[
-        ok(4),
-        ok(7),
-        ok(2),
-        err('first'),
-        ok(9),
-        err('second')
+        const Ok(4),
+        const Ok(7),
+        const Ok(2),
+        const Err('first'),
+        const Ok(9),
+        const Err('second')
       ];
       final valueList = list.collectOrElse((error) => error.length);
       expect(valueList, [4, 7, 2, 5, 9, 6]);
@@ -77,10 +77,10 @@ void main() {
 
     test('List with no `err` returns `ok`', () {
       final list = <Result<int, String>>[
-        ok(1),
-        ok(2),
-        ok(3),
-        ok(4),
+        const Ok(1),
+        const Ok(2),
+        const Ok(3),
+        const Ok(4),
       ];
       final valueList = list.collectOrElse((error) => error.length);
       expect(valueList, [1, 2, 3, 4]);
@@ -90,12 +90,12 @@ void main() {
   group('Iterable.sieve', () {
     test('List with `err`', () {
       final list = <Result<int, String>>[
-        ok(4),
-        ok(7),
-        ok(2),
-        err('first'),
-        ok(9),
-        err('second')
+        const Ok(4),
+        const Ok(7),
+        const Ok(2),
+        const Err('first'),
+        const Ok(9),
+        const Err('second')
       ];
       final valueList = list.sieve();
       expect(valueList, [4, 7, 2, 9]);
@@ -103,10 +103,10 @@ void main() {
 
     test('List with no `err` returns `ok`', () {
       final list = <Result<int, String>>[
-        ok(1),
-        ok(2),
-        ok(3),
-        ok(4),
+        const Ok(1),
+        const Ok(2),
+        const Ok(3),
+        const Ok(4),
       ];
       final valueList = list.sieve();
       expect(valueList, [1, 2, 3, 4]);
@@ -114,9 +114,9 @@ void main() {
 
     test('List with only `err`', () {
       final list = <Result<int, String>>[
-        err('Bad'),
-        err('Really bad'),
-        err('Really really bad'),
+        const Err('Bad'),
+        const Err('Really bad'),
+        const Err('Really really bad'),
       ];
       final valueList = list.sieve();
       expect(valueList, <int>[]);
@@ -126,12 +126,12 @@ void main() {
   group('Iterable.sieveErr', () {
     test('List with `err`', () {
       final list = <Result<int, String>>[
-        ok(4),
-        ok(7),
-        ok(2),
-        err('first'),
-        ok(9),
-        err('second')
+        const Ok(4),
+        const Ok(7),
+        const Ok(2),
+        const Err('first'),
+        const Ok(9),
+        const Err('second')
       ];
       final errorList = list.sieveErr();
       expect(errorList, ['first', 'second']);
@@ -139,10 +139,10 @@ void main() {
 
     test('List with no `err` returns `[]`', () {
       final list = <Result<int, String>>[
-        ok(1),
-        ok(2),
-        ok(3),
-        ok(4),
+        const Ok(1),
+        const Ok(2),
+        const Ok(3),
+        const Ok(4),
       ];
       final errorList = list.sieveErr();
       expect(errorList, <String>[]);
@@ -150,9 +150,9 @@ void main() {
 
     test('List with only `err`', () {
       final list = <Result<int, String>>[
-        err('Bad'),
-        err('Really bad'),
-        err('Really really bad'),
+        const Err('Bad'),
+        const Err('Really bad'),
+        const Err('Really really bad'),
       ];
       final errorList = list.sieveErr();
       expect(errorList, [

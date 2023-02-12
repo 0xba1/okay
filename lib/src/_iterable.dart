@@ -9,17 +9,17 @@ extension Collect<T, E> on Iterable<Result<T, E>> {
   ///
   /// ```dart
   /// final list = <Result<int, String>>[
-  ///   ok(4),
-  ///   ok(7),
-  ///   ok(2),
-  ///   err('first'),
-  ///   ok(9),
-  ///   err('second'),
+  ///   Ok(4),
+  ///   Ok(7),
+  ///   Ok(2),
+  ///   Err('first'),
+  ///   Ok(9),
+  ///   Err('second'),
   /// ];
   /// final resultList = list.collect();
-  /// expect(resultList, err<Iterable<int>, String>('first'));
+  /// expect(resultList, ErrIterable<int>, String>('first'));
   ///
-  /// final list = <Result<int, String>>[ok(1), ok(2), ok(3), ok(4)];
+  /// final list = <Result<int, String>>[Ok(1), Ok(2), Ok(3), Ok(4)];
   /// final resultList = list.collect();
   /// expect(resultList.unwrap(), [1, 2, 3, 4]);
   /// ```
@@ -28,9 +28,9 @@ extension Collect<T, E> on Iterable<Result<T, E>> {
       final error = firstWhere(
         (Result<T, E> result) => result.isErr,
       ).unwrapErr();
-      return Result.err(error);
+      return Err(error);
     } catch (_) {
-      return Result.ok(map((Result<T, E> result) => result.unwrap()));
+      return Ok(map((Result<T, E> result) => result.unwrap()));
     }
   }
 
@@ -41,17 +41,17 @@ extension Collect<T, E> on Iterable<Result<T, E>> {
   ///
   /// ```dart
   /// final list = <Result<int, String>>[
-  ///   ok(4),
-  ///   ok(7),
-  ///   ok(2),
-  ///   err('first'),
-  ///   ok(9),
-  ///   err('second'),
+  ///   Ok(4),
+  ///   Ok(7),
+  ///   Ok(2),
+  ///   Err('first'),
+  ///   Ok(9),
+  ///   Err('second'),
   /// ];
   /// final valueList = list.collectOr(0);
   /// expect(valueList, [4, 7, 2, 0, 9, 0]);
   ///
-  /// final list = <Result<int, String>>[ok(1), ok(2), ok(3), ok(4)];
+  /// final list = <Result<int, String>>[Ok(1), Ok(2), Ok(3), Ok(4)];
   /// final valueList = list.collectOr(0);
   /// expect(valueList, [1, 2, 3, 4]);
   /// ```
@@ -68,17 +68,17 @@ extension Collect<T, E> on Iterable<Result<T, E>> {
   ///
   /// ```dart
   /// final list = <Result<int, String>>[
-  ///   ok(4),
-  ///   ok(7),
-  ///   ok(2),
-  ///   err('first'),
-  ///   ok(9),
-  ///   err('second'),
+  ///   Ok(4),
+  ///   Ok(7),
+  ///   Ok(2),
+  ///   Err('first'),
+  ///   Ok(9),
+  ///   Err('second'),
   /// ];
   /// final valueList = list.collectOrElse((error) => error.length);
   /// expect(valueList, [4, 7, 2, 5, 9, 6]);
   ///
-  /// final list = <Result<int, String>>[ok(1), ok(2), ok(3), ok(4)];
+  /// final list = <Result<int, String>>[Ok(1), Ok(2), Ok(3), Ok(4)];
   /// final valueList = list.collectOrElse((error) => error.length);
   /// expect(valueList, [1, 2, 3, 4]);
   /// ```
@@ -95,24 +95,24 @@ extension Collect<T, E> on Iterable<Result<T, E>> {
   ///
   /// ```dart
   /// final list = <Result<int, String>>[
-  ///   ok(4),
-  ///   ok(7),
-  ///   ok(2),
-  ///   err('first'),
-  ///   ok(9),
-  ///   err('second'),
+  ///   Ok(4),
+  ///   Ok(7),
+  ///   Ok(2),
+  ///   Err('first'),
+  ///   Ok(9),
+  ///   Err('second'),
   /// ];
   /// final valueList = list.sieve();
   /// expect(valueList, [4, 7, 2, 9]);
   ///
-  /// final list = <Result<int, String>>[ok(1), ok(2), ok(3), ok(4)];
+  /// final list = <Result<int, String>>[Ok(1), Ok(2), Ok(3), Ok(4)];
   /// final valueList = list.sieve();
   /// expect(valueList, [1, 2, 3, 4]);
   ///
   /// final list = <Result<int, String>>[
-  ///   err('Bad'),
-  ///   err('Really bad'),
-  ///   err('Really really bad'),
+  ///   Err('Bad'),
+  ///   Err('Really bad'),
+  ///   Err('Really really bad'),
   /// ];
   /// final valueList = list.sieve();
   /// expect(valueList, <int>[]);
@@ -129,24 +129,24 @@ extension Collect<T, E> on Iterable<Result<T, E>> {
   ///
   /// ```dart
   /// final list = <Result<int, String>>[
-  ///   ok(4),
-  ///   ok(7),
-  ///   ok(2),
-  ///   err('first'),
-  ///   ok(9),
-  ///   err('second'),
+  ///   Ok(4),
+  ///   Ok(7),
+  ///   Ok(2),
+  ///   Err('first'),
+  ///   Ok(9),
+  ///   Err('second'),
   /// ];
   /// final errorList = list.sieveErr();
   /// expect(errorList, ['first', 'second']);
   ///
-  /// final list = <Result<int, String>>[ok(1), ok(2), ok(3), ok(4)];
+  /// final list = <Result<int, String>>[Ok(1), Ok(2), Ok(3), Ok(4)];
   /// final errorList = list.sieveErr();
   /// expect(errorList, <String>[]);
   ///
   /// final list = <Result<int, String>>[
-  ///   err('Bad'),
-  ///   err('Really bad'),
-  ///   err('Really really bad'),
+  ///   Err('Bad'),
+  ///   Err('Really bad'),
+  ///   Err('Really really bad'),
   /// ];
   /// final errorList = list.sieveErr();
   /// expect(errorList, ['Bad', 'Really bad', 'Really really bad']);

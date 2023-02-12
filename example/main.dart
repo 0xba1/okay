@@ -50,7 +50,9 @@ Future<Result<Map<String, dynamic>, ConnectionError>> getBooks() async {
       Uri.https('www.googleapis.com', '/books/v1/volumes', {'q': '{http}'});
 
   // Check for internet connection
-  if (!isThereInternetConnection()) return err(ConnectionError.noInternet);
+  if (!isThereInternetConnection()) {
+    return const Err(ConnectionError.noInternet);
+  }
 
   // Await the http get response, then decode the json-formatted response.
   final response = await http.get(url);
@@ -59,25 +61,25 @@ Future<Result<Map<String, dynamic>, ConnectionError>> getBooks() async {
     try {
       final jsonResponse =
           convert.jsonDecode(response.body) as Map<String, dynamic>;
-      return ok(jsonResponse);
+      return Ok(jsonResponse);
     } catch (_) {
-      return err(ConnectionError.badData);
+      return const Err(ConnectionError.badData);
     }
   }
 
   switch (response.statusCode) {
     case 401:
-      return err(ConnectionError.badRequest);
+      return const Err(ConnectionError.badRequest);
     case 403:
-      return err(ConnectionError.forbidden);
+      return const Err(ConnectionError.forbidden);
     case 404:
-      return err(ConnectionError.notFound);
+      return const Err(ConnectionError.notFound);
     case 500:
-      return err(ConnectionError.internalServerError);
+      return const Err(ConnectionError.internalServerError);
     case 501:
-      return err(ConnectionError.notImplemented);
+      return const Err(ConnectionError.notImplemented);
     default:
-      return err(ConnectionError.otherError);
+      return const Err(ConnectionError.otherError);
   }
 }
 

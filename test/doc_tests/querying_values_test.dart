@@ -4,13 +4,13 @@ import 'package:test/test.dart';
 void main() {
   group('Result.isOk', () {
     test('on `ok`', () {
-      final x = ok<int, String>(9);
+      const x = Ok<int, String>(9);
 
       expect(x.isOk, true);
     });
 
     test('on `err`', () {
-      final x = err<int, String>('An unexpected error occured');
+      const x = Err<int, String>('An unexpected error occured');
 
       expect(x.isOk, false);
     });
@@ -18,7 +18,7 @@ void main() {
 
   group('Result.isOkAnd', () {
     test('on `ok`', () {
-      final x = ok<int, String>(9);
+      const x = Ok<int, String>(9);
 
       expect(x.isOkAnd((int val) => val > 5), true);
 
@@ -28,7 +28,7 @@ void main() {
     });
 
     test('on `err`', () {
-      final x = err<int, String>('An unexpected error occured');
+      const x = Err<int, String>('An unexpected error occured');
 
       expect(x.isOkAnd((_) => true), false);
     });
@@ -36,13 +36,13 @@ void main() {
 
   group('Result.isErr', () {
     test('on `err`', () {
-      final x = err<int, String>('An unexpected error occured');
+      const x = Err<int, String>('An unexpected error occured');
 
       expect(x.isErr, true);
     });
 
     test('on `ok`', () {
-      final x = ok<int, String>(0);
+      const x = Ok<int, String>(0);
 
       expect(x.isErr, false);
     });
@@ -50,7 +50,7 @@ void main() {
 
   group('Result.isErrAnd', () {
     test('on `err`', () {
-      final x = err<int, String>('An unexpected error occured');
+      const x = Err<int, String>('An unexpected error occured');
 
       expect(x.isErrAnd((String value) => value.isNotEmpty), true);
 
@@ -58,7 +58,7 @@ void main() {
     });
 
     test('on `ok`', () {
-      final x = ok<int, String>(0);
+      const x = Ok<int, String>(0);
 
       expect(x.isErrAnd((_) => true), false);
     });
