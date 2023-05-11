@@ -36,9 +36,6 @@ abstract class Result<T, E> {
   // ignore: public_member_api_docs
   const Result();
 
-  // factory Ok(T value) => Ok(value);
-  // factory Err(E error) => Err(error);
-
   //------------------------------------------------------------------------
   // Methods
 

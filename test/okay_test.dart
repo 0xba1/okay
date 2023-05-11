@@ -38,11 +38,11 @@ void main() {
 
   test('orElse', () {
     expect(op1().orElse((_) => const Ok<int, String>(667)).unwrap(), 666);
-    expect(op1().orElse((e) => Err<int, String>(e)).unwrap(), 666);
+    expect(op1().orElse(Err<int, String>.new).unwrap(), 666);
 
     expect(op2().orElse((_) => const Ok<int, String>(667)).unwrap(), 667);
     expect(
-      op2().orElse((e) => Err<int, String>(e)).unwrapErr(),
+      op2().orElse(Err<int, String>.new).unwrapErr(),
       'sadface',
     );
   });
