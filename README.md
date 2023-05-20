@@ -34,7 +34,7 @@ final goodString = result.when(
     print('Success with value: $value');
     return value;
   },
-  Err: (Error) {
+  err: (error) {
     print('Failure with Error: $Error');
     return 'Fallback string';
   },

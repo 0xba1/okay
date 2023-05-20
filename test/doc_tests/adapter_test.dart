@@ -6,13 +6,13 @@ void main() {
     test('`ok` variant', () {
       const x = Ok<int, String>(2);
 
-      expect(x.ok, 2);
+      expect(x.ok(), 2);
     });
 
     test('`err` variant', () {
       const x = Err<int, String>('An error occured');
 
-      expect(x.ok, null);
+      expect(x.ok(), null);
     });
   });
 
@@ -20,13 +20,13 @@ void main() {
     test('`ok` variant', () {
       const x = Ok<int, String>(2);
 
-      expect(x.err, null);
+      expect(x.err(), null);
     });
 
     test('`err` variant', () {
       const x = Err<int, String>('An error occured');
 
-      expect(x.err, 'An error occured');
+      expect(x.err(), 'An error occured');
     });
   });
 }

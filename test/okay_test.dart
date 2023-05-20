@@ -133,16 +133,16 @@ void main() {
     expect(tErr.toString(), 'Err( 81 )');
   });
 
-  test('hashcode (`ok`)', () {
+  test('hashcode (`Ok`)', () {
     const tOk = Ok<int, int>(9);
 
-    expect(tOk.hashCode, const Ok<int, int>(9).hashCode);
+    expect(tOk.hashCode, Object.hash('Ok', 9));
   });
 
-  test('hashcode (`err`)', () {
+  test('hashcode (`Err`)', () {
     const tErr = Err<int, int>(81);
 
-    expect(tErr.hashCode, const Err<int, int>(81).hashCode);
+    expect(tErr.hashCode, Object.hash('Err', 81));
   });
 
   test('Nullable values and errors', () {
@@ -155,5 +155,41 @@ void main() {
 
     expect(okResult.unwrap(), nullOk);
     expect(errResult.unwrapErr(), nullErr);
+  });
+
+  test('switch on Ok', () {
+    const Result<int, int> ok = Ok<int, int>(69);
+
+    final okVal = switch (ok) {
+      Ok(v: final value) => value,
+      Err(e: _) => 0,
+    };
+
+    expect(okVal, 69);
+  });
+
+  test('switch on Err', () {
+    const Result<int, int> err = Err<int, int>(69);
+
+    final errVal = switch (err) {
+      Ok() => 0,
+      Err(e: final error) => error,
+    };
+
+    expect(errVal, 69);
+  });
+
+  test('Switch expressions', () {
+    const Result<int, int> err = Err<int, int>(69);
+
+    final int errVal;
+    switch (err) {
+      case Ok():
+        errVal = 1;
+      case Err(e: final error):
+        errVal = error;
+    }
+
+    expect(errVal, 69);
   });
 }

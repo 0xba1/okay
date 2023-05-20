@@ -3,7 +3,7 @@ import 'package:okay/src/_result.dart';
 /// Methods on `Iterable<Result<T, E>>`
 extension Collect<T, E> on Iterable<Result<T, E>> {
   /// Convert an `Iterable<Result<T, E>>` to a `Result<Iterable<T>, E>`.
-  /// If there is an `err` in the iterable the first `err` is returned.
+  /// If there is an `Err` in the iterable the first `Err` is returned.
   ///
   /// ## Basic usage
   ///
@@ -35,7 +35,7 @@ extension Collect<T, E> on Iterable<Result<T, E>> {
   }
 
   /// Converts an `Iterable<Result<T, E>>` to a `<Iterable<T>`.
-  /// All `err` values are replaced by the provided `fallback`.
+  /// All `Err` values are replaced by the provided `fallback`.
   ///
   /// ## Basic usage
   ///
@@ -62,7 +62,7 @@ extension Collect<T, E> on Iterable<Result<T, E>> {
   }
 
   /// Converts an `Iterable<Result<T, E>>` to a `<Iterable<T>`.
-  /// All `err` values are replaced by the result of the provided function.
+  /// All `Err` values are replaced by the result of the provided function.
   ///
   /// ## Basic usage
   ///
@@ -89,7 +89,7 @@ extension Collect<T, E> on Iterable<Result<T, E>> {
   }
 
   /// Converts an `Iterable<Result<T, E>>` to a `<Iterable<T>`.
-  /// All `err` values are skipped.
+  /// All `Err` values are skipped.
   ///
   /// ## Basic usage
   ///
@@ -123,7 +123,7 @@ extension Collect<T, E> on Iterable<Result<T, E>> {
   }
 
   /// Converts an `Iterable<Result<T, E>>` to a `<Iterable<E>`.
-  /// All `ok` values are skipped.
+  /// All `Ok` values are skipped.
   ///
   /// ## Basic usage
   ///
