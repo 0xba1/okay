@@ -32,7 +32,7 @@ import 'package:okay/src/_exceptions.dart';
 /// ```
 /// {@endtemplate}
 @immutable
-abstract class Result<T, E> {
+sealed class Result<T, E> {
   // ignore: public_member_api_docs
   const Result();
 
@@ -51,12 +51,12 @@ abstract class Result<T, E> {
   ///
   /// ```dart
   /// Result<int, String> x = Ok(2);
-  /// expect(x.ok, 2);
+  /// expect(x.ok(), 2);
   ///
   /// Result<int, String> x = Err('An error occured');
-  /// expect(x.ok, null);
+  /// expect(x.ok(), null);
   /// ```
-  T? get ok;
+  T? ok();
 
   /// Converts from `Result<T, E>` to `E?`.
   ///
@@ -66,20 +66,20 @@ abstract class Result<T, E> {
   ///
   /// ```dart
   /// Result<int, String> x = Ok(2);
-  /// expect(x.err, null);
+  /// expect(x.err(), null);
   ///
   /// Result<int, String> x = Err('An error occured');
-  /// expect(x.err, 'An error occured');
+  /// expect(x.err(), 'An error occured');
   /// ```
-  E? get err;
+  E? err();
   //-----------------------------------
 
   //-----------------------------------
   // Boolean
   // Boolean operations on the contained values
 
-  /// Return `res` if the result is `ok`,
-  /// otherwise returns the `err` value of `this`.
+  /// Return `res` if the result is `Ok`,
+  /// otherwise returns the `Err` value of `this`.
   ///
   /// ## Examples
   ///
@@ -104,8 +104,8 @@ abstract class Result<T, E> {
   /// ```
   Result<U, E> and<U>(Result<U, E> res);
 
-  /// Calls `op` if the result is `ok`,
-  /// otherwise returns the `err` value of `this`.
+  /// Calls `op` if the result is `Ok`,
+  /// otherwise returns the `Err` value of `this`.
   ///
   /// This function can be used for control flow based on `Result` values.
   ///
@@ -128,8 +128,8 @@ abstract class Result<T, E> {
   /// ```
   Result<U, E> andThen<U>(Result<U, E> Function(T value) okMap);
 
-  /// Returns `res` if the result is `err`,
-  /// otherwise returns the `ok` (success) value of `this`.
+  /// Returns `res` if the result is `Err`,
+  /// otherwise returns the `Ok` (success) value of `this`.
   ///
   /// ## Examples
   ///
@@ -154,8 +154,8 @@ abstract class Result<T, E> {
   /// ```
   Result<T, F> or<F>(Result<T, F> res);
 
-  /// Calls `op` if the result is `err`,
-  /// otherwise returns the `ok` value of `this`.
+  /// Calls `op` if the result is `Err`,
+  /// otherwise returns the `Ok` value of `this`.
   ///
   /// This function can be used for control flow based on result values.
   ///
@@ -181,9 +181,9 @@ abstract class Result<T, E> {
 
   // -------------------------------
   // Contains
-  // Compares contained `ok` or `err` value
+  // Compares contained `Ok` or `Err` value
 
-  /// Returns `true` if the result is an `ok` (success) value
+  /// Returns `true` if the result is an `Ok` (success) value
   /// containing the given value.
   ///
   /// ## Examples
@@ -201,7 +201,7 @@ abstract class Result<T, E> {
   /// ```
   bool contains(Object? x);
 
-  /// Returns `true` if the result is an `err` (failure) value
+  /// Returns `true` if the result is an `Err` (failure) value
   /// containing the given value.
   ///
   /// ## Examples
@@ -225,13 +225,13 @@ abstract class Result<T, E> {
   // Extractors
   // Extract value or error
 
-  /// Returns the contained `ok` (success) value.
+  /// Returns the contained `Ok` (success) value.
   ///
   /// ## Throws an exception
   ///
-  /// Throws an exception if the value is an `err` (failure),
+  /// Throws an exception if the value is an `Err` (failure),
   /// with an exception message including the passed message,
-  /// and the content of the `err`.
+  /// and the content of the `Err`.
   ///
   /// ## Examples
   ///
@@ -245,16 +245,16 @@ abstract class Result<T, E> {
   /// ```
   T expect(String message);
 
-  /// Returns the contained `ok` (success) value.
+  /// Returns the contained `Ok` (success) value.
   /// Because this function may throw an exception, its use is generally discouraged.
   /// Instead, prefer to use `switch` statements with the `Result.type`
-  /// and handle the `err` (failure) case explicitly, or call [`unwrapOr`],
+  /// and handle the `Err` (failure) case explicitly, or call [`unwrapOr`],
   /// [`unwrapOrElse`].
   ///
   /// ## Throws an exception
   ///
-  /// Throws an exception if the value is an `err`, with exception message
-  /// provided by the `err`'s value.
+  /// Throws an exception if the value is an `Err`, with exception message
+  /// provided by the `Err`'s value.
   ///
   /// ## Examples
   ///
@@ -265,17 +265,17 @@ abstract class Result<T, E> {
   /// expect(x.unwrap(), 69);
   ///
   /// Result<int, String> y = Err('emergency failure');
-  /// expect(y.unwrap(), "emergency failure"); // Throws an exception with message `called `Result.unwrapErr()` on an `err` value: 'emergency failure'`
+  /// expect(y.unwrap(), "emergency failure"); // Throws an exception with message `called `Result.unwrapErr()` on an `Err` value: 'emergency failure'`
   /// ```
   T unwrap();
 
-  /// Returns the contained `err` (failure) value.
+  /// Returns the contained `Err` (failure) value.
   ///
   /// ## Throws an exception
   ///
-  /// Throws an exception if the value is an `ok` (success),
+  /// Throws an exception if the value is an `Ok` (success),
   /// with the exception message including the passed message,
-  /// and the content of the `ok` value.
+  /// and the content of the `Ok` value.
   ///
   /// ## Examples
   ///
@@ -285,25 +285,25 @@ abstract class Result<T, E> {
   /// ```
   E expectErr(String message);
 
-  /// Returns the contained `err` (failure) value.
+  /// Returns the contained `Err` (failure) value.
   ///
   /// ## Throws an exception
   ///
-  /// Throws an exception if the value is an `ok`, with an exception message
-  /// provided by the `ok`'s value.
+  /// Throws an exception if the value is an `Ok`, with an exception message
+  /// provided by the `Ok`'s value.
   ///
   /// ## Examples
   ///
   /// ```dart
   /// Result<int, String> x = Ok(2);
-  /// x.unwrapErr(); // Throws an exception with message `called `Result.unwrapErr()` on an `ok` value: 2`
+  /// x.unwrapErr(); // Throws an exception with message `called `Result.unwrapErr()` on an `Ok` value: 2`
   ///
   /// Result<int, String> y = Err('emergency failure');
   /// expect(y.unwrapErr(), "emergency failure");
   /// ```
   E unwrapErr();
 
-  /// Returns the contained `ok` (success) value or a provided fallback.
+  /// Returns the contained `Ok` (success) value or a provided fallback.
   ///
   /// ## Examples
   ///
@@ -320,7 +320,7 @@ abstract class Result<T, E> {
   /// ```
   T unwrapOr(T fallback);
 
-  /// Returns the contained `ok` (success) value
+  /// Returns the contained `Ok` (success) value
   /// or computes it from the closure.
   ///
   /// ## Examples
@@ -341,7 +341,7 @@ abstract class Result<T, E> {
   // Inspect
   // Run closures on contained value or error
 
-  /// Calls the provided closure with the contained value (if `ok`)
+  /// Calls the provided closure with the contained value (if `Ok`)
   ///
   /// ## Examples
   ///
@@ -360,7 +360,7 @@ abstract class Result<T, E> {
   /// ```
   Result<T, E> inspect(void Function(T value) f);
 
-  /// Calls the provided closure with the contained error (if `err`).
+  /// Calls the provided closure with the contained error (if `Err`).
   ///
   /// ## Examples
   ///
@@ -383,7 +383,7 @@ abstract class Result<T, E> {
   // QueryingValues
   // Querying the contained values
 
-  /// Resturns `true` if the result is `ok` (success)
+  /// Resturns `true` if the result is `Ok` (success)
   ///
   /// ## Expamples
   ///
@@ -398,7 +398,7 @@ abstract class Result<T, E> {
   /// ```
   bool get isOk;
 
-  /// Returns `true` if the result is `ok` and the value matches the predicate `f`
+  /// Returns `true` if the result is `Ok` and the value matches the predicate `f`
   ///
   /// ## Examples
   ///
@@ -413,7 +413,7 @@ abstract class Result<T, E> {
   /// ```
   bool isOkAnd(bool Function(T value) f);
 
-  /// Resturns `true` if the result is `err` (failure)
+  /// Resturns `true` if the result is `Err` (failure)
   ///
   /// ## Expamples
   ///
@@ -428,7 +428,7 @@ abstract class Result<T, E> {
   /// ```
   bool get isErr;
 
-  /// Returns `true` if the result is `err` and the value matches the predicate `f`
+  /// Returns `true` if the result is `Err` and the value matches the predicate `f`
   ///
   /// ## Examples
   ///
@@ -482,7 +482,7 @@ abstract class Result<T, E> {
   });
 
   /// Maps a `Result<T, E>` to `Result<U, E>` by applying a function to a
-  /// contained `ok` (success) value, and leaving an `err` (failure) value
+  /// contained `Ok` (success) value, and leaving an `Err` (failure) value
   /// untouched.
   ///
   /// This function can be used to compose the results of two functions.
@@ -508,8 +508,8 @@ abstract class Result<T, E> {
   /// ```
   Result<U, E> map<U>(U Function(T value) okMap);
 
-  /// Returns the provided fallback (if `err` (failure)), or
-  /// applies a function to the contained value (if `ok` (success)).
+  /// Returns the provided fallback (if `Err` (failure)), or
+  /// applies a function to the contained value (if `Ok` (success)).
   ///
   /// ## Examples
   ///
@@ -523,8 +523,8 @@ abstract class Result<T, E> {
   U mapOr<U>({required U fallback, required U Function(T value) okMap});
 
   /// Maps a `Result<T, E>` to `U` by applying fallback function `fallback` to
-  /// a contained `err` (failure) value, or function `op` to a
-  /// contained `ok` (success) value.
+  /// a contained `Err` (failure) value, or function `op` to a
+  /// contained `Ok` (success) value.
   ///
   /// This function can be used to unpack a successful result
   /// while handliing an error.
@@ -558,8 +558,8 @@ abstract class Result<T, E> {
   });
 
   /// Maps a `Result<T, E>` to `Result<T, F>` by applying a function to a
-  /// contained `err` (failure) value,
-  /// leaving an `ok` (success) value untouched.
+  /// contained `Err` (failure) value,
+  /// leaving an `Ok` (success) value untouched.
   ///
   /// This function can be used to pass through a successful result while
   /// handling an error.
@@ -583,8 +583,10 @@ abstract class Result<T, E> {
 /// {@macro result}
 class Ok<T, E> extends Result<T, E> {
   /// {@macro result}
-  const Ok(this._value);
-  final T _value;
+  const Ok(this.v);
+
+  /// Ok wrapped value
+  final T v;
 
   //------------------------------------------------------------------------
   // Methods
@@ -594,10 +596,10 @@ class Ok<T, E> extends Result<T, E> {
   // Adapter for each variant
 
   @override
-  T? get ok => _value;
+  T? ok() => v;
 
   @override
-  E? get err => null;
+  E? err() => null;
   //-----------------------------------
 
   //-----------------------------------
@@ -610,28 +612,28 @@ class Ok<T, E> extends Result<T, E> {
 
   @override
   Result<U, E> andThen<U>(Result<U, E> Function(T value) okMap) {
-    return okMap(_value);
+    return okMap(v);
   }
 
   @override
   Result<T, F> or<F>(Result<T, F> res) {
-    return Ok(_value);
+    return Ok(v);
   }
 
   @override
   Result<T, F> orElse<F>(Result<T, F> Function(E error) errMap) {
-    return Ok(_value);
+    return Ok(v);
   }
 
   // -------------------------------
 
   // -------------------------------
   // Contains
-  // Compares contained `ok` or `err` value
+  // Compares contained `Ok` or `Err` value
 
   @override
   bool contains(Object? x) {
-    return _value == x;
+    return v == x;
   }
 
   @override
@@ -647,37 +649,37 @@ class Ok<T, E> extends Result<T, E> {
 
   @override
   T expect(String message) {
-    return _value;
+    return v;
   }
 
   @override
   T unwrap() {
-    return _value;
+    return v;
   }
 
   @override
   E expectErr(String message) {
     throw ExpectErrException(
       errorMessage: message,
-      okString: _value.toString(),
+      okString: v.toString(),
     );
   }
 
   @override
   E unwrapErr() {
     throw UnwrapErrException(
-      okString: _value.toString(),
+      okString: v.toString(),
     );
   }
 
   @override
   T unwrapOr(T fallback) {
-    return _value;
+    return v;
   }
 
   @override
   T unwrapOrElse(T Function(E error) fallback) {
-    return _value;
+    return v;
   }
 
   // --------------------------------
@@ -688,7 +690,7 @@ class Ok<T, E> extends Result<T, E> {
 
   @override
   Result<T, E> inspect(void Function(T value) f) {
-    f(_value);
+    f(v);
 
     return this;
   }
@@ -709,7 +711,7 @@ class Ok<T, E> extends Result<T, E> {
 
   @override
   bool isOkAnd(bool Function(T value) f) {
-    return f(_value);
+    return f(v);
   }
 
   @override
@@ -736,12 +738,12 @@ class Ok<T, E> extends Result<T, E> {
 
   @override
   Result<U, E> map<U>(U Function(T value) okMap) {
-    return Ok(okMap(_value));
+    return Ok(okMap(v));
   }
 
   @override
   U mapOr<U>({required U fallback, required U Function(T value) okMap}) {
-    return okMap(_value);
+    return okMap(v);
   }
 
   @override
@@ -749,36 +751,37 @@ class Ok<T, E> extends Result<T, E> {
     required U Function(E error) errMap,
     required U Function(T value) okMap,
   }) {
-    return okMap(_value);
+    return okMap(v);
   }
 
   @override
   Result<T, F> mapErr<F>(F Function(E error) errMap) {
-    return Ok(_value);
+    return Ok(v);
   }
 
   // --------------------------------
 
   @override
-  bool operator ==(Object? other) =>
-      other is Ok<T, E> && other._value == _value;
+  bool operator ==(Object? other) => other is Ok<T, E> && other.v == v;
 
   @override
   int get hashCode {
-    return Object.hash('Err', _value);
+    return Object.hash('Ok', v);
   }
 
   @override
   String toString() {
-    return 'Ok( $_value )';
+    return 'Ok( $v )';
   }
 }
 
 /// {@macro result}
 class Err<T, E> extends Result<T, E> {
   /// {@macro result}
-  const Err(this._error);
-  final E _error;
+  const Err(this.e);
+
+  /// Err wrapped error
+  final E e;
 
   //------------------------------------------------------------------------
   // Methods
@@ -788,10 +791,10 @@ class Err<T, E> extends Result<T, E> {
   // Adapter for each variant
 
   @override
-  T? get ok => null;
+  T? ok() => null;
 
   @override
-  E? get err => _error;
+  E? err() => e;
   //-----------------------------------
 
   //-----------------------------------
@@ -799,12 +802,12 @@ class Err<T, E> extends Result<T, E> {
   // Boolean operations on the contained values
   @override
   Result<U, E> and<U>(Result<U, E> res) {
-    return Err(_error);
+    return Err(e);
   }
 
   @override
   Result<U, E> andThen<U>(Result<U, E> Function(T value) okMap) {
-    return Err(_error);
+    return Err(e);
   }
 
   @override
@@ -814,20 +817,20 @@ class Err<T, E> extends Result<T, E> {
 
   @override
   Result<T, F> orElse<F>(Result<T, F> Function(E error) errMap) {
-    return errMap(_error);
+    return errMap(e);
   }
 
   // -------------------------------
 
   // -------------------------------
   // Contains
-  // Compares contained `ok` or `err` value
+  // Compares contained `Ok` or `Err` value
 
   @override
   bool contains(Object? x) => false;
 
   @override
-  bool containsErr(Object? x) => x == _error;
+  bool containsErr(Object? x) => x == e;
 
   // --------------------------------
 
@@ -839,25 +842,25 @@ class Err<T, E> extends Result<T, E> {
   T expect(String message) {
     throw ExpectException(
       errorMessage: message,
-      errString: _error.toString(),
+      errString: e.toString(),
     );
   }
 
   @override
   T unwrap() {
     throw UnwrapException(
-      errString: _error.toString(),
+      errString: e.toString(),
     );
   }
 
   @override
   E expectErr(String message) {
-    return _error;
+    return e;
   }
 
   @override
   E unwrapErr() {
-    return _error;
+    return e;
   }
 
   @override
@@ -867,7 +870,7 @@ class Err<T, E> extends Result<T, E> {
 
   @override
   T unwrapOrElse(T Function(E error) fallback) {
-    return fallback(_error);
+    return fallback(e);
   }
 
   // --------------------------------
@@ -883,7 +886,7 @@ class Err<T, E> extends Result<T, E> {
 
   @override
   Result<T, E> inspectErr(void Function(E error) f) {
-    f(_error);
+    f(e);
 
     return this;
   }
@@ -907,7 +910,7 @@ class Err<T, E> extends Result<T, E> {
 
   @override
   bool isErrAnd(bool Function(E error) f) {
-    return f(_error);
+    return f(e);
   }
 
   // --------------------------------
@@ -926,7 +929,7 @@ class Err<T, E> extends Result<T, E> {
 
   @override
   Result<U, E> map<U>(U Function(T value) okMap) {
-    return Err(_error);
+    return Err(e);
   }
 
   @override
@@ -939,27 +942,26 @@ class Err<T, E> extends Result<T, E> {
     required U Function(E error) errMap,
     required U Function(T value) okMap,
   }) {
-    return errMap(_error);
+    return errMap(e);
   }
 
   @override
   Result<T, F> mapErr<F>(F Function(E error) errMap) {
-    return Err(errMap(_error));
+    return Err(errMap(e));
   }
 
   // --------------------------------
 
   @override
-  bool operator ==(Object? other) =>
-      other is Err<T, E> && other._error == _error;
+  bool operator ==(Object? other) => other is Err<T, E> && other.e == e;
 
   @override
   int get hashCode {
-    return Object.hash('Err', _error);
+    return Object.hash('Err', e);
   }
 
   @override
   String toString() {
-    return 'Err( $_error )';
+    return 'Err( $e )';
   }
 }
