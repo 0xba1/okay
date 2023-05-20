@@ -29,6 +29,13 @@ class FallibleOpFailure {}
 
 final result = fallibleOp();
 
+final goodString = switch(result) {
+  Ok(v: final value) => value,
+  Err(e: final error) => error,
+};
+
+// ------------- OR --------------
+
 final goodString = result.when(
   ok: (value) {
     print('Success with value: $value');

@@ -179,7 +179,7 @@ void main() {
     expect(errVal, 69);
   });
 
-  test('Switch expressions', () {
+  test('Switch statements', () {
     const Result<int, int> err = Err<int, int>(69);
 
     final int errVal;
