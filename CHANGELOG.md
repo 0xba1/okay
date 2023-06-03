@@ -1,4 +1,8 @@
 
+# 2.0.0-prerelease2
+
+- Added `final` class descriptor to `Ok` and `Err`
+
 # 2.0.0-prerelease
 
 ## Major Change
