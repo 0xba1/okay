@@ -1,8 +1,8 @@
 # okay
 
-Typed Error-handling for dart. An implementation of rust's [`Result`][result_link] type.
+Typed Error-handling for dart.
 
-[`Result<T, E>`](https://pub.dev/documentation/okay/latest/okay/Result-class.html) is a type used for returning and propagating Errors. It is a type with the variants, [`Ok(T)`](https://pub.dev/documentation/okay/latest/okay/ok.html), representing success and containing a value, and [`Err(E)`](https://pub.dev/documentation/okay/latest/okay/Err.html), representing Error and containing an Error value.
+[`Result<T, E>`](https://pub.dev/documentation/okay/latest/okay/Result-class.html) is a type used for returning and propagating Errors. It is a type with the variants, [`Ok(T)`](https://pub.dev/documentation/okay/latest/okay/Ok-class.html), representing success and containing a value, and [`Err(E)`](https://pub.dev/documentation/okay/latest/okay/Err-class.html), representing Error and containing an Error value.
 
 ![ci](https://github.com/0xba1/okay/actions/workflows/okay.yml/badge.svg)
 [![pub package][pub_badge]][pub_link]
@@ -147,5 +147,3 @@ The [`andThen`](https://pub.dev/documentation/okay/latest/okay/Result/andThen.ht
 [license_link]: https://opensource.org/licenses/MIT
 [result_link]: https://doc.rust-lang.org/std/result/index.html
 [coverage_badge]: https://raw.githubusercontent.com/0xba1/okay/b9311276cdc3a77071f18cb8a487368f8435f35c/.assets/coverage_badge.svg
-
-This package was heavily inspired by [rustlang's result type][result_link].

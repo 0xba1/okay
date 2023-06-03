@@ -1,4 +1,15 @@
 
+# 2.0.0
+
+- `Result` now a sealed class
+
+## Breaking Changes
+
+- Removed `ok()`, `err()`, `Result.ok()`, `Result.err()`
+- Constructors now `Ok()` and `Err()`
+- Removed `ok_or_err()` method on `Result`
+- `Result.ok`, `Result.err` now `Result.ok()`, `Result.err()`
+
 # 2.0.0-prerelease2
 
 - Added `final` class descriptor to `Ok` and `Err`
