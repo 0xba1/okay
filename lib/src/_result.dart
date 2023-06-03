@@ -581,7 +581,7 @@ sealed class Result<T, E> {
 }
 
 /// {@macro result}
-class Ok<T, E> extends Result<T, E> {
+final class Ok<T, E> extends Result<T, E> {
   /// {@macro result}
   const Ok(this.v);
 
@@ -776,7 +776,7 @@ class Ok<T, E> extends Result<T, E> {
 }
 
 /// {@macro result}
-class Err<T, E> extends Result<T, E> {
+final class Err<T, E> extends Result<T, E> {
   /// {@macro result}
   const Err(this.e);
 
