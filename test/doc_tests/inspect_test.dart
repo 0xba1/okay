@@ -10,7 +10,7 @@ void main() {
     }
   }
 
-  test('Result.inspect()', () {
+  test('Result.inspect() on Ok', () {
     var randomSideVar = 0;
 
     final _ = parseToInt('4').inspect((val) => randomSideVar = val * 9);
@@ -18,12 +18,28 @@ void main() {
     expect(randomSideVar, 36);
   });
 
-  test('Result.inspect()', () {
+  test('Result.inspectErr() on Err', () {
     var randomSideVar = 0;
 
     final _ =
         parseToInt('four').inspectErr((val) => randomSideVar = val.length);
 
     expect(randomSideVar, 4);
+  });
+
+  test('Result.inspectErr() on Ok', () {
+    var randomSideVar = 0;
+
+    final _ = parseToInt('4').inspectErr((err) => randomSideVar = err.length);
+
+    expect(randomSideVar, 0);
+  });
+
+  test('Result.inspect() on Err', () {
+    var randomSideVar = 0;
+
+    final _ = parseToInt('four').inspect((val) => randomSideVar = val);
+
+    expect(randomSideVar, 0);
   });
 }
